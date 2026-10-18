@@ -1,0 +1,683 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Arnav Raja</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Arnav Raja: software, machine learning, music, visual art and writing on ideas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a personal library. One narrow reading column, with a "shelf" of interests
+   filed under their real Dewey Decimal numbers, then projects, writing, freelance and contact. */
+:root {
+  --paper: #F2F3EF;
+  --paper-2: #E8EAE4;
+  --ink: #16211F;
+  --muted: #56625D;
+  --rule: #D1D6CF;
+  --accent: #3337A8;
+  --mark: #F2B632;
+  --mark-ink: #16211F;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #111513; --paper-2: #181D1A; --ink: #E7EBE7; --muted: #9AA59F;
+    --rule: #2B332F; --accent: #A3A7FF; --mark: #E0A626; --mark-ink: #111513;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #111513; --paper-2: #181D1A; --ink: #E7EBE7; --muted: #9AA59F;
+  --rule: #2B332F; --accent: #A3A7FF; --mark: #E0A626; --mark-ink: #111513;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-underline-offset: 0.18em; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+.wrap {
+  max-width: 64rem;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.inner { max-width: 64rem; margin: 0 auto; padding-left: clamp(0px, 3vw, 2rem); padding-right: clamp(0px, 3vw, 2rem); }
+
+/* Header */
+header.top { padding-block: 1.5rem; }
+.top .inner { display: flex; flex-wrap: wrap; gap: 0.75rem 2rem; align-items: baseline; justify-content: space-between; }
+.wordmark { font-family: var(--display); font-weight: 800; font-size: 1.05rem; letter-spacing: -0.01em; color: var(--ink); text-decoration: none; }
+.wordmark span { color: var(--muted); font-weight: 400; }
+nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem 1.4rem; }
+nav a { font-family: var(--mono); font-size: 0.82rem; color: var(--muted); text-decoration: none; letter-spacing: 0.02em; }
+nav a:hover { color: var(--ink); }
+
+/* Hero */
+.hero { padding-block: clamp(3rem, 9vw, 6.5rem) clamp(2.5rem, 6vw, 4.5rem); }
+.sig { font-family: var(--mono); font-size: 0.88rem; color: var(--muted); margin: 0 0 1.25rem; overflow-wrap: anywhere; }
+.sig b { color: var(--ink); font-weight: 500; }
+h1 {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(3.2rem, 11vw, 8.5rem);
+  line-height: 0.88;
+  letter-spacing: -0.045em;
+  margin: 0;
+  font-variation-settings: "opsz" 96;
+}
+h1 .hl { background: linear-gradient(transparent 62%, var(--mark) 62%, var(--mark) 90%, transparent 90%); padding: 0 0.04em; }
+.lede { max-width: 36rem; font-size: clamp(1.15rem, 2.2vw, 1.35rem); margin: 2rem 0 0; text-wrap: pretty; }
+.lede em { font-style: italic; }
+
+/* Base resets for the standalone page, and the six part colours */
+body { margin: 0; }
+[hidden] { display: none !important; }
+:root {
+  --s-colour: #B9BCF0; --s-lab: #93AE9B; --s-tools: #F2B632;
+  --s-blog: #F2F3EF; --s-sound: #3337A8; --s-work: #1F6F78;
+}
+
+/* Section scaffolding */
+section { padding-block: clamp(2.5rem, 6vw, 4.5rem); border-top: 1px solid var(--rule); }
+.sec-head { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); gap: 1rem 2.5rem; align-items: baseline; margin-bottom: 2rem; }
+.label { font-family: var(--mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin: 0; }
+h2 { font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 3.6vw, 2.3rem); letter-spacing: -0.02em; line-height: 1.1; margin: 0; text-wrap: balance; }
+.sec-body { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); gap: 1rem 2.5rem; }
+.sec-body > .col { grid-column: 2; min-width: 0; }
+p { margin: 0 0 1rem; max-width: 40rem; }
+
+/* The map: ten subjects on two axes (making to understanding, abstract to human) */
+.map {
+  position: relative; width: 100%; aspect-ratio: 16 / 10; min-height: 24rem;
+  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule);
+}
+.map::before, .map::after { content: ""; position: absolute; pointer-events: none; }
+.map::before { left: 50%; top: 2.2rem; bottom: 2.2rem; border-left: 1px dashed var(--rule); }
+.map::after { top: 50%; left: 1.8rem; right: 1.8rem; border-top: 1px dashed var(--rule); }
+.map svg.edges { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
+.edges line { stroke: var(--muted); stroke-opacity: 0.45; stroke-width: 1; transition: stroke 160ms ease, stroke-opacity 160ms ease, stroke-width 160ms ease; }
+.edges line.faint { stroke-dasharray: 2 5; stroke-opacity: 0.35; }
+.map.active .edges line { stroke-opacity: 0.12; }
+.map.active .edges line.on { stroke: var(--accent); stroke-opacity: 1; stroke-width: 1.75; }
+.ax { position: absolute; font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted); white-space: nowrap; }
+.ax-t { top: 0.6rem; left: 50%; transform: translateX(-50%); }
+.ax-b { bottom: 0.6rem; left: 50%; transform: translateX(-50%); }
+.ax-l { left: 0.1rem; top: 50%; writing-mode: vertical-rl; transform: translateY(-50%) rotate(180deg); }
+.ax-r { right: 0.1rem; top: 50%; writing-mode: vertical-rl; transform: translateY(-50%); }
+.node {
+  position: absolute; left: calc(var(--x) * 1%); top: calc(var(--y) * 1%); transform: translate(-50%, -0.35rem);
+  display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
+  color: var(--ink); text-decoration: none; z-index: 1; transition: opacity 160ms ease;
+}
+.node .dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease; }
+.node .nm { font-family: var(--display); font-weight: 600; font-size: 1rem; letter-spacing: -0.01em; white-space: nowrap; background: var(--paper); padding: 0 0.3rem; line-height: 1.2; }
+.node.hub .dot { width: 0.95rem; height: 0.95rem; background: var(--mark); border-color: var(--mark); }
+.node.hub .nm { font-style: italic; }
+.map.active .node { opacity: 0.3; }
+.map.active .node.lit { opacity: 1; }
+.map.active .node.self .dot { background: var(--accent); border-color: var(--accent); transform: scale(1.35); }
+.node:hover { text-decoration: none; }
+.node:focus-visible { outline: none; }
+.node:focus-visible .nm { outline: 2px solid var(--accent); outline-offset: 2px; }
+.mapcap { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr); gap: 0.5rem 2rem; padding-top: 1.1rem; min-height: 5.5rem; }
+.mapcap .mc-t { font-family: var(--display); font-weight: 600; font-size: 1.15rem; margin: 0; }
+.mapcap .mc-d { font-size: 1rem; color: var(--muted); margin: 0; }
+.mapcap .mc-d a { font-family: var(--mono); font-size: 0.82rem; white-space: nowrap; }
+
+.note { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); margin-top: 1rem; }
+
+/* Projects: a domain tree; every branch has a made half and a taken-in half */
+.zroot { font-family: var(--mono); font-size: 0.95rem; font-weight: 500; margin: 0 0 0.9rem; }
+.zroot span { color: var(--muted); font-weight: 400; }
+.zone { list-style: none; margin: 0; padding: 0 0 0 0.35rem; }
+.branch { position: relative; padding: 0 0 2.4rem 2.1rem; border-left: 1px solid var(--ink); min-width: 0; }
+.branch:last-child { border-left-color: transparent; padding-bottom: 0.5rem; }
+.branch::before { content: ""; position: absolute; left: -1px; top: 0; width: 1.5rem; height: 1rem; border-left: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.bhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.9rem; }
+.sub { font-family: var(--display); font-weight: 800; font-size: clamp(1.6rem, 3.6vw, 2.2rem); letter-spacing: -0.035em; line-height: 1; color: var(--ink); text-decoration: none; }
+.sub span { font-family: var(--mono); font-weight: 400; font-size: 0.8rem; letter-spacing: 0; color: var(--muted); }
+.sub:hover { color: var(--accent); text-decoration: none; }
+.status { margin-left: auto; font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); display: inline-flex; align-items: center; gap: 0.45rem; }
+.status::before { content: ""; width: 0.5rem; height: 0.5rem; border-radius: 50%; border: 1.5px solid var(--muted); }
+.status.live::before { background: var(--mark); border-color: var(--mark); }
+.balance { display: flex; height: 3px; margin: 0.9rem 0 0.9rem; max-width: 40rem; }
+.balance i { flex: 1; background: var(--ink); }
+.balance i + i { background: var(--mark); }
+.halves { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem 1.75rem; max-width: 40rem; }
+.half { min-width: 0; }
+.half .k { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); display: flex; align-items: center; gap: 0.45rem; }
+.half .k::before { content: ""; width: 0.55rem; height: 0.55rem; background: var(--ink); }
+.half.in .k::before { background: var(--mark); }
+.half p { font-size: 1rem; margin: 0.3rem 0 0; }
+
+/* Writing: pieces grouped by how ripe the idea is, each with a small copy of the shelf map */
+.ripen { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 1.5rem; margin-top: 1.5rem; }
+.stage { min-width: 0; display: flex; flex-direction: column; gap: 1rem; }
+.stage-h { position: relative; padding-top: 1.4rem; border-top: 1px solid var(--ink); }
+.stage-h::before { content: ""; position: absolute; top: -0.4rem; left: 0; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); }
+.stage.seed .stage-h::before { width: 0.5rem; height: 0.5rem; top: -0.25rem; }
+.stage.sprout .stage-h::before { width: 0.7rem; height: 0.7rem; top: -0.35rem; background: var(--paper-2); }
+.stage.ever .stage-h::before { width: 0.9rem; height: 0.9rem; top: -0.45rem; background: var(--mark); border-color: var(--mark); }
+.stage-h h3 { font-family: var(--display); font-weight: 600; font-size: 1.2rem; letter-spacing: -0.01em; margin: 0; }
+.stage-h p { font-size: 0.95rem; color: var(--muted); margin: 0.2rem 0 0; }
+.stage-h .len { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); }
+.piece { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: 0.85rem; align-items: start; padding: 0.9rem 0 0; border-top: 1px dashed var(--rule); color: var(--ink); text-decoration: none; }
+.piece:hover .pt { color: var(--accent); }
+.piece svg { width: 4.5rem; height: auto; display: block; }
+.piece svg .frame { fill: none; stroke: var(--rule); }
+.piece svg .cross { stroke: var(--rule); stroke-dasharray: 1.5 2.5; }
+.piece svg .d { fill: var(--muted); fill-opacity: 0.35; }
+.piece svg .d.on { fill: var(--accent); fill-opacity: 1; }
+.piece svg .ln { stroke: var(--accent); stroke-width: 1.2; }
+.pt { font-family: var(--display); font-weight: 600; font-size: 1.05rem; line-height: 1.25; letter-spacing: -0.01em; display: block; transition: color 160ms ease; }
+.pm { font-family: var(--mono); font-size: 0.72rem; color: var(--muted); display: block; margin-top: 0.3rem; }
+.ripen-key { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); margin: 1.5rem 0 0; max-width: 40rem; }
+.btn {
+
+  display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.5rem;
+  font-family: var(--mono); font-size: 0.85rem; color: var(--paper); background: var(--ink);
+  padding: 0.7rem 1.1rem; text-decoration: none; border: 0; cursor: pointer; border-radius: 2px;
+}
+.btn:hover { background: var(--accent); color: var(--paper); text-decoration: none; }
+.btn.ghost { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1px var(--ink); }
+.btn.ghost:hover { background: var(--ink); color: var(--paper); }
+
+/* Freelance */
+.services { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 14rem), 1fr)); gap: 1.75rem 2rem; margin: 0; padding: 0; list-style: none; }
+.services li { border-top: 2px solid var(--ink); padding-top: 0.9rem; }
+.services h3 { font-family: var(--display); font-weight: 600; font-size: 1.15rem; margin: 0 0 0.35rem; letter-spacing: -0.01em; }
+.services p { font-size: 1rem; color: var(--muted); margin: 0; }
+
+/* Work: each service drawn as noise turning into signal */
+.work-intro { font-size: 1rem; color: var(--muted); }
+.turns { list-style: none; margin: 1.25rem 0 0; padding: 0; display: grid; gap: 1.5rem; }
+.svc { display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 1rem 1.75rem; align-items: start; padding-top: 1.25rem; border-top: 1px solid var(--rule); }
+.sig-pic svg { width: 9rem; height: auto; display: block; overflow: visible; }
+.sig-pic .before { fill: none; stroke: var(--muted); stroke-width: 1.4; stroke-linecap: round; opacity: 0.8; }
+.sig-pic .after { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.sig-pic .pt { fill: var(--muted); }
+.sig-pic .ar { fill: none; stroke: var(--muted); stroke-width: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .svc:hover .after { animation: trace 900ms cubic-bezier(.3,.7,.2,1); }
+  @keyframes trace { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+}
+.svc-text h3 { font-family: var(--display); font-weight: 600; font-size: 1.15rem; letter-spacing: -0.01em; margin: 0 0 0.5rem; }
+.svc-text p { font-size: 1rem; margin: 0 0 0.35rem; display: grid; grid-template-columns: 5.5rem minmax(0, 1fr); gap: 0.75rem; }
+.svc-text .k { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding-top: 0.25rem; }
+
+/* Contact: a tuning dial; each part of the site is a station */
+.dial { position: relative; height: 6.2rem; margin: 1.5rem 0 1.25rem; touch-action: pan-y; user-select: none; cursor: pointer; }
+.band {
+  position: absolute; left: 0; right: 0; top: 0.9rem; height: 2rem;
+  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule);
+  background:
+    repeating-linear-gradient(90deg, var(--muted) 0 1px, transparent 1px 50px) top / 100% 70% no-repeat,
+    repeating-linear-gradient(90deg, var(--rule) 0 1px, transparent 1px 10px) top / 100% 40% no-repeat;
+}
+.needle { position: absolute; top: 0.3rem; height: 3.2rem; width: 2px; margin-left: -1px; background: var(--accent); left: calc(var(--n, 50) * 1%); pointer-events: none; z-index: 2; }
+.needle::before { content: ""; position: absolute; top: -0.35rem; left: -4px; border: 5px solid transparent; border-top: 6px solid var(--accent); border-bottom: 0; }
+.dial.untuned .needle { opacity: 0.45; }
+@media (prefers-reduced-motion: no-preference) {
+  .needle { transition: left 420ms cubic-bezier(.2,.8,.2,1), opacity 200ms ease; }
+  .dial.dragging .needle { transition: none; }
+}
+.station {
+  position: absolute; left: calc(var(--p) * 1%); top: 3.4rem; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
+  background: none; border: 0; padding: 0.2rem; cursor: pointer;
+  font-family: var(--mono); font-size: 0.8rem; color: var(--muted);
+}
+.station i { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 1px var(--rule); transition: transform 160ms ease; }
+.station:hover { color: var(--ink); }
+.station[aria-pressed="true"] { color: var(--ink); font-weight: 500; }
+.station[aria-pressed="true"] i { transform: scale(1.5); }
+.slip { border-top: 2px solid var(--ink); padding-top: 0.9rem; min-width: 0; max-width: 40rem; }
+.slip .label { margin: 0 0 0.35rem; }
+.slip-prompt { font-family: var(--display); font-weight: 600; font-size: clamp(1.1rem, 2.2vw, 1.35rem); letter-spacing: -0.01em; line-height: 1.3; margin: 0 0 1rem; min-height: 2.6em; }
+.slip dl { margin: 0; display: grid; gap: 0.5rem; }
+.slip dl div { display: grid; grid-template-columns: 4.5rem minmax(0, 1fr); gap: 0.75rem; align-items: baseline; border-top: 1px dashed var(--rule); padding-top: 0.5rem; }
+.slip dt { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+.slip dd { margin: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.4rem 0.9rem; min-width: 0; }
+.slip code { font-family: var(--mono); font-size: 1rem; color: var(--ink); overflow-wrap: anywhere; user-select: all; }
+.mini { font-family: var(--mono); font-size: 0.72rem; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 0.2em; }
+
+/* Work is secondary: quieter section */
+.minor h2 { font-size: clamp(1.3rem, 2.6vw, 1.7rem); }
+.minor .services h3 { font-size: 1.05rem; }
+
+/* Now */
+.now { background: var(--paper-2); }
+.now blockquote { margin: 0; font-size: clamp(1.2rem, 2.4vw, 1.5rem); line-height: 1.45; font-style: italic; max-width: 38rem; text-wrap: pretty; }
+.now .m { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); margin-top: 1rem; }
+
+/* Contact */
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: 0.75rem 1rem; }
+.mail code { font-family: var(--display); font-weight: 800; font-size: clamp(1.5rem, 5vw, 2.8rem); letter-spacing: -0.03em; overflow-wrap: anywhere; user-select: all; }
+.mail .btn { margin-top: 0; }
+.elsewhere { list-style: none; padding: 0; margin: 2rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; font-family: var(--mono); font-size: 0.88rem; }
+
+footer { border-top: 1px solid var(--rule); padding-block: 2rem 2.5rem; font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
+footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 2rem; }
+
+/* Load moment: the name settles in from a visible state */
+@media (prefers-reduced-motion: no-preference) {
+  h1 { animation: settle 700ms cubic-bezier(.2,.7,.2,1) both; }
+  h1 .hl { background-size: 100% 100%; animation: mark 900ms 250ms cubic-bezier(.2,.7,.2,1) both; background-repeat: no-repeat; }
+  @keyframes settle { from { letter-spacing: -0.02em; opacity: 0.6; } to { letter-spacing: -0.045em; opacity: 1; } }
+  @keyframes mark { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
+}
+
+@media (max-width: 720px) {
+  .sec-head, .sec-body { grid-template-columns: minmax(0, 1fr); }
+  .sec-body > .col { grid-column: 1; }
+  .map { aspect-ratio: 4 / 5; min-height: 30rem; }
+  .node { left: calc(var(--mx) * 1%); top: calc(var(--my) * 1%); }
+  .node .nm { font-size: 0.92rem; }
+  .mapcap { grid-template-columns: minmax(0, 1fr); }
+  .halves { grid-template-columns: minmax(0, 1fr); }
+  .branch { padding-left: 1.6rem; }
+  .branch::before { width: 1.1rem; }
+  .ripen { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .svc { grid-template-columns: minmax(0, 1fr); }
+  .station { font-size: 0.7rem; }
+  .sig-pic svg { width: 8rem; }
+  .svc-text p { grid-template-columns: minmax(0, 1fr); gap: 0.1rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+<header class="top">
+  <div class="inner">
+    <a class="wordmark" href="#top">arnavraja<span>.in</span></a>
+    <nav aria-label="Sections">
+      <ul>
+        <li><a href="#shelf">Interests</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#writing">Writing</a></li>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+
+<div class="hero">
+  <div class="inner">
+    <p class="sig"><b>arnav.raja</b>(code, models, sound, colour, ideas)</p>
+    <h1>Arnav<br><span class="hl">Raja</span></h1>
+    <!-- EDIT: rewrite this paragraph in your own voice -->
+    <p class="lede">I write about the things I keep thinking about.</p>
+  </div>
+</div>
+
+<section id="shelf" aria-labelledby="shelf-h">
+  <div class="inner">
+    <div class="sec-head">
+      <p class="label">The shelf</p>
+      <h2 id="shelf-h">Ten subjects, and the lines that run between them</h2>
+    </div>
+    <div class="sec-body">
+      <div class="col">
+        <!-- Each subject sits on two axes. --x/--y place it on wide screens, --mx/--my on phones (0 to 100). data-links names the subjects it connects to. -->
+        <div class="map" id="map">
+          <svg class="edges" id="edges" aria-hidden="true"></svg>
+          <span class="ax ax-t">Making</span>
+          <span class="ax ax-b">Understanding</span>
+          <span class="ax ax-l">Abstract</span>
+          <span class="ax ax-r">Human</span>
+          <a class="node" id="n-software" style="--x:20;--y:20;--mx:24;--my:10" data-links="ai maths" data-note="Building things that run. The place where an idea is tested by whether it works." href="https://blog.arnavraja.in/tag/software"><span class="dot"></span><span class="nm">Software</span></a>
+          <a class="node" id="n-ai" style="--x:38;--y:34;--mx:36;--my:26" data-links="software maths philosophy" data-note="Machines that learn. It sits between code, mathematics and old questions about minds." href="https://blog.arnavraja.in/tag/ai"><span class="dot"></span><span class="nm">AI and ML</span></a>
+          <a class="node" id="n-maths" style="--x:11;--y:60;--mx:26;--my:44" data-links="software ai music philosophy economics" data-note="The language underneath: of code, of harmony, of markets and of argument." href="https://blog.arnavraja.in/tag/mathematics"><span class="dot"></span><span class="nm">Mathematics</span></a>
+          <a class="node" id="n-music" style="--x:70;--y:38;--mx:80;--my:36" data-links="maths art anthropology" data-note="Mostly listening, with some making. Pattern you can hear. It sits lower on the map because I take in more of it than I make." href="https://blog.arnavraja.in/tag/music"><span class="dot"></span><span class="nm">Music</span></a>
+          <a class="node" id="n-art" style="--x:80;--y:14;--mx:72;--my:9" data-links="music anthropology philosophy" data-note="Mostly making, with some looking. Pattern you can see. It sits high on the map because I make more of it than I take in." href="https://blog.arnavraja.in/tag/art"><span class="dot"></span><span class="nm">Visual art</span></a>
+          <a class="node hub" id="n-ideas" style="--x:52;--y:50;--mx:50;--my:52" data-links="software ai maths music art philosophy politics economics anthropology" data-note="Personal essays and everything else. The one point that touches all the others." href="https://blog.arnavraja.in/tag/ideas"><span class="dot"></span><span class="nm">Ideas</span></a>
+          <a class="node" id="n-philosophy" style="--x:32;--y:78;--mx:30;--my:66" data-links="maths ai art politics" data-note="Mind, ethics and meaning. The questions behind everything else here." href="https://blog.arnavraja.in/tag/philosophy"><span class="dot"></span><span class="nm">Philosophy</span></a>
+          <a class="node" id="n-economics" style="--x:62;--y:80;--mx:40;--my:82" data-links="maths politics anthropology" data-note="Markets, development and the Indian economy. Mathematics applied to how people choose." href="https://blog.arnavraja.in/tag/economy"><span class="dot"></span><span class="nm">Economics</span></a>
+          <a class="node" id="n-politics" style="--x:84;--y:64;--mx:72;--my:64" data-links="philosophy economics anthropology" data-note="Institutions, policy and power. Philosophy meeting the real world." href="https://blog.arnavraja.in/tag/politics"><span class="dot"></span><span class="nm">Politics</span></a>
+          <a class="node" id="n-anthropology" style="--x:86;--y:84;--mx:70;--my:86" data-links="music art politics economics" data-note="Culture, people and how societies work. Where music and art come from." href="https://blog.arnavraja.in/tag/anthropology"><span class="dot"></span><span class="nm">Anthropology</span></a>
+        </div>
+        <div class="mapcap" aria-live="polite">
+          <p class="mc-t" id="mct">How to read the map</p>
+          <p class="mc-d" id="mcd">Up is making, down is understanding. Left is abstract, right is human. Lines join subjects that feed each other. Point at a subject to see what it touches, and open it to read about it on the blog.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" aria-labelledby="projects-h">
+  <div class="inner">
+    <div class="sec-head">
+      <p class="label">Projects</p>
+      <h2 id="projects-h">Four branches of one domain, each split between what I make and what I take in</h2>
+    </div>
+    <div class="sec-body">
+      <div class="col">
+        <!-- EDIT: change "status" to "status live" once a project is up. -->
+        <p class="zroot">arnavraja.in <span>/ projects</span></p>
+        <ul class="zone">
+          <li class="branch">
+            <div class="bhead"><a class="sub" href="https://lab.arnavraja.in">lab<span>.arnavraja.in</span></a><span class="status">In progress</span></div>
+            <div class="balance" aria-hidden="true"><i></i><i></i></div>
+            <div class="halves">
+              <div class="half out"><span class="k">Built</span><p>Machine learning experiments, small models and notebooks, with notes on what worked and what did not.</p></div>
+              <div class="half in"><span class="k">Read</span><p>Papers and books on how machines learn, with my notes on each.</p></div>
+            </div>
+          </li>
+          <li class="branch">
+            <div class="bhead"><a class="sub" href="https://tools.arnavraja.in">tools<span>.arnavraja.in</span></a><span class="status">In progress</span></div>
+            <div class="balance" aria-hidden="true"><i></i><i></i></div>
+            <div class="halves">
+              <div class="half out"><span class="k">Built</span><p>Small, useful software I made for myself and made public.</p></div>
+              <div class="half in"><span class="k">Used</span><p>The software I rely on every day, and what makes it good.</p></div>
+            </div>
+          </li>
+          <li class="branch">
+            <div class="bhead"><a class="sub" href="https://sound.arnavraja.in">sound<span>.arnavraja.in</span></a><span class="status">In progress</span></div>
+            <div class="balance" aria-hidden="true"><i style="flex:1"></i><i style="flex:2"></i></div>
+            <div class="halves">
+              <div class="half out"><span class="k">Made, less often</span><p>The occasional track, sketch or production note.</p></div>
+              <div class="half in"><span class="k">Heard, most of the time</span><p>Listening logs, album notes and the records I keep going back to. This is most of what lives here.</p></div>
+            </div>
+          </li>
+          <li class="branch">
+            <div class="bhead"><a class="sub" href="https://colour.arnavraja.in">colour<span>.arnavraja.in</span></a><span class="status">In progress</span></div>
+            <div class="balance" aria-hidden="true"><i style="flex:2"></i><i style="flex:1"></i></div>
+            <div class="halves">
+              <div class="half out"><span class="k">Made, most of the time</span><p>Drawings, paintings and digital work. This is most of what lives here.</p></div>
+              <div class="half in"><span class="k">Seen, less often</span><p>Now and then, notes on an artist, an exhibition or an image I keep returning to.</p></div>
+            </div>
+          </li>
+        </ul>
+        <p class="note">Also on this domain: blog.arnavraja.in for writing, and work.arnavraja.in for freelance work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="writing" aria-labelledby="writing-h">
+  <div class="inner">
+    <div class="sec-head">
+      <p class="label">Writing</p>
+      <h2 id="writing-h">Ideas at three stages of ripeness</h2>
+    </div>
+    <div class="sec-body">
+      <div class="col">
+        <p>Writing on the blog is sorted by how far an idea has grown, not by date. Each piece carries a small copy of the shelf map, with the subjects it draws on lit up.</p>
+        <!-- EDIT: replace these working titles with your published posts. data-subjects uses the names from the map: software ai maths music art ideas philosophy economics politics anthropology -->
+        <div class="ripen">
+          <div class="stage seed">
+            <div class="stage-h"><span class="len">A few lines</span><h3>Seeds</h3><p>Fragments, questions and things I noticed.</p></div>
+            <a class="piece" href="https://blog.arnavraja.in/tag/seeds" data-subjects="maths music"><svg aria-hidden="true"></svg><span><span class="pt">Mathematics as a kind of music</span><span class="pm">Working title</span></span></a>
+          </div>
+          <div class="stage sprout">
+            <div class="stage-h"><span class="len">A few pages</span><h3>Sprouts</h3><p>Notes that are growing: reading notes and ideas in progress.</p></div>
+            <a class="piece" href="https://blog.arnavraja.in/tag/sprouts" data-subjects="ai maths philosophy"><svg aria-hidden="true"></svg><span><span class="pt">What a neural network actually learns</span><span class="pm">Working title</span></span></a>
+          </div>
+          <div class="stage ever">
+            <div class="stage-h"><span class="len">Finished</span><h3>Evergreens</h3><p>Essays I have worked through and still stand behind.</p></div>
+            <a class="piece" href="https://blog.arnavraja.in/tag/evergreens" data-subjects="ideas philosophy"><svg aria-hidden="true"></svg><span><span class="pt">Why I am writing in public</span><span class="pm">Working title</span></span></a>
+          </div>
+        </div>
+        <p class="ripen-key">Pieces move from one stage to the next as they grow. A seed can become an essay; most stay seeds.</p>
+        <a class="btn" href="https://blog.arnavraja.in">Read the blog at blog.arnavraja.in</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="work" class="minor" aria-labelledby="work-h">
+  <div class="inner">
+    <div class="sec-head">
+      <p class="label">Work</p>
+      <h2 id="work-h">For people building things</h2>
+    </div>
+    <div class="sec-body">
+      <div class="col">
+        <p class="work-intro">Each job turns noise into signal. Something tangled comes in, and something clear goes out.</p>
+        <!-- EDIT: adjust services to what you actually offer -->
+        <ul class="turns">
+          <li class="svc">
+            <div class="sig-pic"><svg viewBox="0 0 120 48" aria-hidden="true"><path class="before" d="M5 30 C 15 2, 27 46, 19 22 S 41 4, 31 36 S 9 42, 45 12"/><path class="ar" d="M53 24 H67 M63 20 L67 24 L63 28"/><path class="after" pathLength="1" d="M74 38 H86 V14 H100 V30 H116"/></svg></div>
+            <div class="svc-text">
+              <h3>Software development</h3>
+              <p><span class="k">You bring</span>An idea, a process done by hand, or a tool that has outgrown its spreadsheet.</p>
+              <p><span class="k">You get</span>A website, web app or internal tool, built cleanly and handed over with documentation.</p>
+            </div>
+          </li>
+          <li class="svc">
+            <div class="sig-pic"><svg viewBox="0 0 120 48" aria-hidden="true"><circle class="pt" cx="6.0" cy="24.6" r="1.9"/><circle class="pt" cx="10.0" cy="26.0" r="1.9"/><circle class="pt" cx="14.0" cy="17.7" r="1.9"/><circle class="pt" cx="18.0" cy="18.1" r="1.9"/><circle class="pt" cx="22.0" cy="13.3" r="1.9"/><circle class="pt" cx="26.0" cy="7.7" r="1.9"/><circle class="pt" cx="30.0" cy="10.1" r="1.9"/><circle class="pt" cx="34.0" cy="15.3" r="1.9"/><circle class="pt" cx="38.0" cy="25.0" r="1.9"/><circle class="pt" cx="42.0" cy="31.3" r="1.9"/><path class="ar" d="M53 24 H67 M63 20 L67 24 L63 28"/><circle class="pt" cx="78.0" cy="29.5" r="1.9"/><circle class="pt" cx="82.0" cy="22.1" r="1.9"/><circle class="pt" cx="86.0" cy="21.1" r="1.9"/><circle class="pt" cx="90.0" cy="12.8" r="1.9"/><circle class="pt" cx="94.0" cy="14.5" r="1.9"/><circle class="pt" cx="98.0" cy="13.2" r="1.9"/><circle class="pt" cx="102.0" cy="12.6" r="1.9"/><circle class="pt" cx="106.0" cy="19.9" r="1.9"/><circle class="pt" cx="110.0" cy="21.2" r="1.9"/><circle class="pt" cx="114.0" cy="30.3" r="1.9"/><path class="after" pathLength="1" d="M76 34 L77.0 32.4 L78.0 30.9 L79.0 29.3 L80.0 27.8 L81.0 26.3 L82.0 24.9 L83.0 23.6 L84.0 22.2 L85.0 21.0 L86.0 19.9 L87.0 18.8 L88.0 17.8 L89.0 16.9 L90.0 16.2 L91.0 15.5 L92.0 15.0 L93.0 14.6 L94.0 14.2 L95.0 14.1 L96.0 14.0 L97.0 14.1 L98.0 14.2 L99.0 14.6 L100.0 15.0 L101.0 15.5 L102.0 16.2 L103.0 16.9 L104.0 17.8 L105.0 18.8 L106.0 19.9 L107.0 21.0 L108.0 22.2 L109.0 23.6 L110.0 24.9 L111.0 26.3 L112.0 27.8 L113.0 29.3 L114.0 30.9 L115.0 32.4 L116.0 34.0"/></svg></div>
+            <div class="svc-text">
+              <h3>AI and machine learning</h3>
+              <p><span class="k">You bring</span>A product, and a question about whether AI can make it better.</p>
+              <p><span class="k">You get</span>Language models, search or prediction added where they are worth using, and a straight answer where they are not.</p>
+            </div>
+          </li>
+        </ul>
+        <a class="btn ghost" href="https://work.arnavraja.in">Services, process and rates at work.arnavraja.in</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" aria-labelledby="contact-h">
+  <div class="inner">
+    <div class="sec-head">
+      <p class="label">Contact</p>
+      <h2 id="contact-h">Every message has a frequency</h2>
+    </div>
+    <div class="sec-body">
+      <div class="col">
+        <p class="work-intro">Tune the dial to what your message is about, then put that name in the subject line so it reaches the right place.</p>
+        <div class="dial" id="dial" role="group" aria-label="Choose what your message is about">
+          <div class="band" aria-hidden="true"></div>
+          <span class="needle" id="needle" aria-hidden="true"></span>
+            <button class="station" type="button" data-face="lab" data-p="8" data-prompt="Papers, experiments, or a result you want to compare with mine." aria-pressed="false" style="--p:8;--c:var(--s-lab)"><i></i>lab</button>
+            <button class="station" type="button" data-face="tools" data-p="25" data-prompt="Bug reports, feature ideas, or a tool you wish existed." aria-pressed="false" style="--p:25;--c:var(--s-tools)"><i></i>tools</button>
+            <button class="station" type="button" data-face="sound" data-p="42" data-prompt="Records I should hear, or something you made." aria-pressed="false" style="--p:42;--c:var(--s-sound)"><i></i>sound</button>
+            <button class="station" type="button" data-face="colour" data-p="58" data-prompt="Artists, exhibitions, or a response to my work." aria-pressed="false" style="--p:58;--c:var(--s-colour)"><i></i>colour</button>
+            <button class="station" type="button" data-face="blog" data-p="75" data-prompt="A reply to something I wrote, or a disagreement with it." aria-pressed="false" style="--p:75;--c:var(--s-blog)"><i></i>blog</button>
+            <button class="station" type="button" data-face="work" data-p="92" data-prompt="A project you are building. Say what it is and when you need it." aria-pressed="false" style="--p:92;--c:var(--s-work)"><i></i>work</button>
+        </div>
+        <div class="slip" aria-live="polite">
+          <p class="label" id="slip-face">Between stations</p>
+          <p class="slip-prompt" id="slip-prompt">Anything at all: work, ideas, or something on the shelf.</p>
+          <dl>
+            <div><dt>To</dt><dd><code id="addr">hello@arnavraja.in</code><button class="mini" type="button" data-copy="addr">Copy</button></dd></div>
+            <div><dt>Subject</dt><dd><code id="subj">[hello]</code><button class="mini" type="button" data-copy="subj">Copy</button></dd></div>
+          </dl>
+        </div>
+        <!-- EDIT: add your real profile links -->
+        <ul class="elsewhere">
+          <li><a href="https://github.com/">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/">LinkedIn</a></li>
+          <li><a href="https://blog.arnavraja.in">Blog</a></li>
+          <li><a href="https://work.arnavraja.in">Work</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="inner">
+    <span>&copy; <span id="yr">2026</span> Arnav Raja</span>
+    <span>arnavraja.in</span>
+  </div>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var y = document.getElementById('yr');
+  if (y) y.textContent = new Date().getFullYear();
+  function copyFrom(btn) {
+    var el = document.getElementById(btn.dataset.copy); if (!el) return;
+    var label = btn.textContent;
+    function selectIt() {
+      var r = document.createRange(); r.selectNodeContents(el);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      btn.textContent = 'Selected';
+      setTimeout(function () { btn.textContent = label; }, 1800);
+    }
+    try {
+      navigator.clipboard.writeText(el.textContent.trim()).then(function () {
+        btn.textContent = 'Copied';
+        setTimeout(function () { btn.textContent = label; }, 1800);
+      }, selectIt);
+    } catch (e) { selectIt(); }
+  }
+  document.querySelectorAll('[data-copy]').forEach(function (b) { b.addEventListener('click', function () { copyFrom(b); }); });
+  var dial = document.getElementById('dial');
+  if (dial) {
+    var stations = Array.prototype.slice.call(dial.querySelectorAll('.station'));
+    var faceEl = document.getElementById('slip-face'), promptEl = document.getElementById('slip-prompt'), subj = document.getElementById('subj');
+    var defFace = faceEl.textContent, defPrompt = promptEl.textContent;
+    dial.classList.add('untuned');
+    function needle(p) { dial.style.setProperty('--n', p); }
+    function tune(st) {
+      stations.forEach(function (x) { x.setAttribute('aria-pressed', x === st ? 'true' : 'false'); });
+      dial.classList.toggle('untuned', !st);
+      if (st) {
+        needle(st.dataset.p); faceEl.textContent = st.dataset.face + '.arnavraja.in';
+        promptEl.textContent = st.dataset.prompt; subj.textContent = '[' + st.dataset.face + ']';
+      } else {
+        needle(50); faceEl.textContent = defFace; promptEl.textContent = defPrompt; subj.textContent = '[hello]';
+      }
+    }
+    stations.forEach(function (st) {
+      st.addEventListener('click', function (e) { e.stopPropagation(); tune(st.getAttribute('aria-pressed') === 'true' ? null : st); });
+    });
+    function pct(ev) { var r = dial.getBoundingClientRect(); return Math.max(0, Math.min(100, (ev.clientX - r.left) / r.width * 100)); }
+    function nearest(p) { return stations.reduce(function (a, b) { return Math.abs(b.dataset.p - p) < Math.abs(a.dataset.p - p) ? b : a; }); }
+    var dragging = false;
+    dial.addEventListener('pointerdown', function (ev) {
+      if (ev.target.closest('.station')) return;
+      dragging = true; dial.classList.add('dragging'); dial.setPointerCapture(ev.pointerId); needle(pct(ev));
+    });
+    dial.addEventListener('pointermove', function (ev) { if (dragging) needle(pct(ev)); });
+    function release(ev) {
+      if (!dragging) return;
+      dragging = false; dial.classList.remove('dragging'); tune(nearest(pct(ev)));
+    }
+    dial.addEventListener('pointerup', release);
+    dial.addEventListener('pointercancel', function () { dragging = false; dial.classList.remove('dragging'); });
+  }
+})();
+(function () {
+  var map = document.getElementById('map'), svg = document.getElementById('edges');
+  if (!map || !svg) return;
+  var nodes = {}, list = map.querySelectorAll('.node');
+  list.forEach(function (n) { nodes[n.id.slice(2)] = n; });
+  var pairs = [], seen = {};
+  list.forEach(function (n) {
+    var a = n.id.slice(2);
+    (n.dataset.links || '').split(' ').forEach(function (b) {
+      if (!b || !nodes[b]) return;
+      var k = [a, b].sort().join('|'); if (seen[k]) return; seen[k] = 1;
+      pairs.push([a, b]);
+    });
+  });
+  var NS = 'http://www.w3.org/2000/svg', lines = [];
+  pairs.forEach(function (p) {
+    var l = document.createElementNS(NS, 'line');
+    if (p[0] === 'ideas' || p[1] === 'ideas') l.setAttribute('class', 'faint');
+    svg.appendChild(l); lines.push({ el: l, a: p[0], b: p[1] });
+  });
+  function centre(n) {
+    var d = n.querySelector('.dot').getBoundingClientRect(), m = map.getBoundingClientRect();
+    return [d.left + d.width / 2 - m.left, d.top + d.height / 2 - m.top];
+  }
+  function draw() {
+    var m = map.getBoundingClientRect();
+    svg.setAttribute('viewBox', '0 0 ' + m.width + ' ' + m.height);
+    lines.forEach(function (o) {
+      var p = centre(nodes[o.a]), q = centre(nodes[o.b]);
+      o.el.setAttribute('x1', p[0]); o.el.setAttribute('y1', p[1]);
+      o.el.setAttribute('x2', q[0]); o.el.setAttribute('y2', q[1]);
+    });
+  }
+  draw();
+  if (window.ResizeObserver) new ResizeObserver(draw).observe(map); else window.addEventListener('resize', draw);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+  var mct = document.getElementById('mct'), mcd = document.getElementById('mcd');
+  var defT = mct.textContent, defD = mcd.textContent, current = null;
+  function names(ids) { return ids.map(function (i) { return nodes[i].querySelector('.nm').textContent; }); }
+  function light(id) {
+    current = id; var n = nodes[id], links = (n.dataset.links || '').split(' ').filter(function (x) { return nodes[x]; });
+    map.classList.add('active');
+    list.forEach(function (x) { var k = x.id.slice(2); x.classList.toggle('lit', k === id || links.indexOf(k) > -1); x.classList.toggle('self', k === id); });
+    lines.forEach(function (o) { o.el.classList.toggle('on', o.a === id || o.b === id); });
+    mct.textContent = n.querySelector('.nm').textContent;
+    mcd.textContent = n.dataset.note + ' Touches ' + names(links).join(', ') + '. ';
+    var a = document.createElement('a'); a.href = n.href; a.textContent = 'Read on the blog'; mcd.appendChild(a);
+  }
+  function clear() {
+    current = null; map.classList.remove('active');
+    list.forEach(function (x) { x.classList.remove('lit', 'self'); });
+    lines.forEach(function (o) { o.el.classList.remove('on'); });
+    mct.textContent = defT; mcd.textContent = defD;
+  }
+  var touch = false;
+  list.forEach(function (n) {
+    var id = n.id.slice(2);
+    n.addEventListener('pointerdown', function (e) { touch = e.pointerType !== 'mouse'; });
+    n.addEventListener('mouseenter', function () { light(id); });
+    n.addEventListener('focus', function () { light(id); });
+    n.addEventListener('click', function (e) { if (touch && current !== id) { e.preventDefault(); light(id); } });
+  });
+  map.addEventListener('mouseleave', clear);
+  map.addEventListener('focusout', function (e) { if (!map.contains(e.relatedTarget)) clear(); });
+})();
+(function () {
+  var NS = 'http://www.w3.org/2000/svg', W = 72, H = 45, pad = 4;
+  var pos = {};
+  document.querySelectorAll('#map .node').forEach(function (n) {
+    pos[n.id.slice(2)] = [parseFloat(n.style.getPropertyValue('--x')), parseFloat(n.style.getPropertyValue('--y'))];
+  });
+  function el(tag, attrs) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
+  function xy(p) { return [pad + p[0] / 100 * (W - 2 * pad), pad + p[1] / 100 * (H - 2 * pad)]; }
+  document.querySelectorAll('.piece').forEach(function (a) {
+    var svg = a.querySelector('svg'); if (!svg) return;
+    var on = (a.dataset.subjects || '').split(' ').filter(function (s) { return pos[s]; });
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+    svg.appendChild(el('rect', { class: 'frame', x: 0.5, y: 0.5, width: W - 1, height: H - 1 }));
+    svg.appendChild(el('line', { class: 'cross', x1: W / 2, y1: 2, x2: W / 2, y2: H - 2 }));
+    svg.appendChild(el('line', { class: 'cross', x1: 2, y1: H / 2, x2: W - 2, y2: H / 2 }));
+    for (var i = 0; i < on.length; i++) for (var j = i + 1; j < on.length; j++) {
+      var p = xy(pos[on[i]]), q = xy(pos[on[j]]);
+      svg.appendChild(el('line', { class: 'ln', x1: p[0], y1: p[1], x2: q[0], y2: q[1] }));
+    }
+    Object.keys(pos).forEach(function (k) {
+      var c = xy(pos[k]), lit = on.indexOf(k) > -1;
+      svg.appendChild(el('circle', { class: lit ? 'd on' : 'd', cx: c[0], cy: c[1], r: lit ? 2.6 : 1.6 }));
+    });
+  });
+})();
+</script>
+</body>
+</html>
