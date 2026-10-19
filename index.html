@@ -357,9 +357,9 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
           <a class="node" id="n-politics" style="--x:84;--y:64;--mx:72;--my:64" data-links="philosophy economics anthropology" data-note="Institutions, policy and power. Philosophy meeting the real world." href="https://blog.arnavraja.in/tag/politics"><span class="dot"></span><span class="nm">Politics</span></a>
           <a class="node" id="n-anthropology" style="--x:86;--y:84;--mx:70;--my:86" data-links="music art politics economics" data-note="Culture, people and how societies work. Where music and art come from." href="https://blog.arnavraja.in/tag/anthropology"><span class="dot"></span><span class="nm">Anthropology</span></a>
         </div>
-        <div class="mapcap" aria-live="polite">
-          <p class="mc-t" id="mct">How to read the map</p>
-          <p class="mc-d" id="mcd">Up is making, down is understanding. Left is abstract, right is human. Lines join subjects that feed each other. Point at a subject to see what it touches, and open it to read about it on the blog.</p>
+        <div class="mapcap" id="mapcap" aria-live="polite" hidden>
+          <p class="mc-t" id="mct"></p>
+          <p class="mc-d" id="mcd"></p>
         </div>
       </div>
     </div>
@@ -632,6 +632,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     map.classList.add('active');
     list.forEach(function (x) { var k = x.id.slice(2); x.classList.toggle('lit', k === id || links.indexOf(k) > -1); x.classList.toggle('self', k === id); });
     lines.forEach(function (o) { o.el.classList.toggle('on', o.a === id || o.b === id); });
+    document.getElementById('mapcap').hidden = false;
     mct.textContent = n.querySelector('.nm').textContent;
     mcd.textContent = n.dataset.note + ' Touches ' + names(links).join(', ') + '. ';
     var a = document.createElement('a'); a.href = n.href; a.textContent = 'Read on the blog'; mcd.appendChild(a);
@@ -640,7 +641,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     current = null; map.classList.remove('active');
     list.forEach(function (x) { x.classList.remove('lit', 'self'); });
     lines.forEach(function (o) { o.el.classList.remove('on'); });
-    mct.textContent = defT; mcd.textContent = defD;
+    document.getElementById('mapcap').hidden = true;
   }
   var touch = false;
   list.forEach(function (n) {
