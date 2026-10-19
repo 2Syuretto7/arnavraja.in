@@ -204,6 +204,7 @@ p { margin: 0 0 1rem; max-width: 40rem; }
 .branch { position: relative; padding: 0 0 2.4rem 2.1rem; border-left: 1px solid var(--ink); min-width: 0; }
 .branch:last-child { border-left-color: transparent; padding-bottom: 0.5rem; }
 .branch::before { content: ""; position: absolute; left: -1px; top: 0; width: 1.5rem; height: 1rem; border-left: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.bhead .idea { font-family: var(--display); font-style: italic; font-size: 1rem; color: var(--accent); }
 .bhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.9rem; }
 .sub { font-family: var(--display); font-weight: 800; font-size: clamp(1.6rem, 3.6vw, 2.2rem); letter-spacing: -0.035em; line-height: 1; color: var(--ink); text-decoration: none; }
 .sub span { font-family: var(--mono); font-weight: 400; font-size: 0.8rem; letter-spacing: 0; color: var(--muted); }
@@ -277,7 +278,7 @@ p { margin: 0 0 1rem; max-width: 40rem; }
 .svc-text .k { font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); padding-top: 0.25rem; }
 
 /* Contact: a tuning dial; each part of the site is a station */
-.dial { position: relative; height: 6.2rem; margin: 1.5rem 0 1.25rem; touch-action: pan-y; user-select: none; cursor: pointer; }
+.dial { position: relative; height: 7rem; margin: 1.5rem 0 1.25rem; touch-action: pan-y; user-select: none; cursor: pointer; }
 .band {
   position: absolute; left: 0; right: 0; top: 0.9rem; height: 2rem;
   border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule);
@@ -296,7 +297,8 @@ p { margin: 0 0 1rem; max-width: 40rem; }
   position: absolute; left: calc(var(--p) * 1%); top: 3.4rem; transform: translateX(-50%);
   display: flex; flex-direction: column; align-items: center; gap: 0.35rem;
   background: none; border: 0; padding: 0.2rem; cursor: pointer;
-  font-family: var(--mono); font-size: 0.8rem; color: var(--muted);
+  font-family: var(--display); font-style: italic; font-size: 0.9rem; line-height: 1.15; color: var(--muted);
+  max-width: 7.5rem; text-align: center;
 }
 .station i { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--c); box-shadow: 0 0 0 1px var(--rule); transition: transform 160ms ease; }
 .station:hover { color: var(--ink); }
@@ -349,7 +351,8 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   .branch::before { width: 1.1rem; }
   .ripen { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
   .svc { grid-template-columns: minmax(0, 1fr); }
-  .station { font-size: 0.7rem; }
+  .station { font-size: 0.7rem; max-width: 4.4rem; }
+  .dial { height: 7.6rem; }
   .sig-pic svg { width: 8rem; }
   .svc-text p { grid-template-columns: minmax(0, 1fr); gap: 0.1rem; }
 }
@@ -447,7 +450,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
         <p class="zroot">arnavraja.in <span>/ projects</span></p>
         <ul class="zone">
           <li class="branch">
-            <div class="bhead"><a class="sub" href="https://lab.arnavraja.in">lab<span>.arnavraja.in</span></a><span class="status">In progress</span></div>
+            <div class="bhead"><a class="sub" href="https://lab.arnavraja.in">lab<span>.arnavraja.in</span></a><span class="idea">Mind as mechanism</span><span class="status">In progress</span></div>
             <div class="balance" aria-hidden="true"><i style="flex:1"></i><i style="flex:4"></i></div>
             <div class="halves">
               <div class="half out"><span class="k">Tried, now and then</span><p>The occasional experiment, run to check that I really understand something I have been reading.</p></div>
@@ -455,7 +458,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
             </div>
           </li>
           <li class="branch">
-            <div class="bhead"><a class="sub" href="https://tools.arnavraja.in">tools<span>.arnavraja.in</span></a><span class="status">In progress</span></div>
+            <div class="bhead"><a class="sub" href="https://tools.arnavraja.in">tools<span>.arnavraja.in</span></a><span class="idea">Executable thought</span><span class="status">In progress</span></div>
             <div class="balance" aria-hidden="true"><i></i><i></i></div>
             <div class="halves">
               <div class="half out"><span class="k">Built</span><p>Ambitious, full-scale software I have built and made public.</p></div>
@@ -463,7 +466,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
             </div>
           </li>
           <li class="branch">
-            <div class="bhead"><a class="sub" href="https://sound.arnavraja.in">sound<span>.arnavraja.in</span></a><span class="status">In progress</span></div>
+            <div class="bhead"><a class="sub" href="https://sound.arnavraja.in">sound<span>.arnavraja.in</span></a><span class="idea">Ordered time</span><span class="status">In progress</span></div>
             <div class="balance" aria-hidden="true"><i style="flex:1"></i><i style="flex:2"></i></div>
             <div class="halves">
               <div class="half out"><span class="k">Made, less often</span><p>The occasional track, sketch or production note.</p></div>
@@ -471,7 +474,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
             </div>
           </li>
           <li class="branch">
-            <div class="bhead"><a class="sub" href="https://colour.arnavraja.in">colour<span>.arnavraja.in</span></a><span class="status">In progress</span></div>
+            <div class="bhead"><a class="sub" href="https://colour.arnavraja.in">colour<span>.arnavraja.in</span></a><span class="idea">Ordered space</span><span class="status">In progress</span></div>
             <div class="balance" aria-hidden="true"><i style="flex:2"></i><i style="flex:1"></i></div>
             <div class="halves">
               <div class="half out"><span class="k">Made, most of the time</span><p>Drawings, paintings and digital work. This is most of what lives here.</p></div>
@@ -493,7 +496,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     </div>
     <div class="sec-body">
       <div class="col">
-        <p>Writing on the blog is sorted by how far an idea has grown, not by date.</p>
+        <p>Writing on the blog is sorted by how far an idea has grown, not by date, and filed under the ten ideas on the shelf, from Executable thought to Shared meaning. Every piece starts at Connection.</p>
         <!-- EDIT: replace these working titles with your published posts. data-subjects uses the names from the map: software ai maths music art ideas philosophy economics politics anthropology -->
         <div class="ripen">
           <div class="stage seed">
@@ -520,15 +523,15 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     </div>
     <div class="sec-body">
       <div class="col">
-        <p class="work-intro">Tune the dial to what your message is about, then put that name in the subject line so it reaches the right place.</p>
+        <p class="work-intro">Tune the dial to the idea your message belongs to, then copy the subject line so it reaches the right place.</p>
         <div class="dial" id="dial" role="group" aria-label="Choose what your message is about">
           <div class="band" aria-hidden="true"></div>
           <span class="needle" id="needle" aria-hidden="true"></span>
-            <button class="station" type="button" data-face="lab" data-p="10" data-prompt="A paper I should read, or a question about AI, mathematics or philosophy." aria-pressed="false" style="--p:10;--c:var(--s-lab)"><i></i>lab</button>
-            <button class="station" type="button" data-face="tools" data-p="30" data-prompt="Bug reports, feature ideas, or a tool you wish existed." aria-pressed="false" style="--p:30;--c:var(--s-tools)"><i></i>tools</button>
-            <button class="station" type="button" data-face="sound" data-p="50" data-prompt="Records I should hear, or something you made." aria-pressed="false" style="--p:50;--c:var(--s-sound)"><i></i>sound</button>
-            <button class="station" type="button" data-face="colour" data-p="70" data-prompt="Artists, exhibitions, or a response to my work." aria-pressed="false" style="--p:70;--c:var(--s-colour)"><i></i>colour</button>
-            <button class="station" type="button" data-face="blog" data-p="90" data-prompt="A reply to something I wrote, or a disagreement with it." aria-pressed="false" style="--p:90;--c:var(--s-blog)"><i></i>blog</button>
+            <button class="station" type="button" data-face="lab" data-idea="Mind as mechanism" data-p="10" data-prompt="A paper I should read, or a question about AI, mathematics or philosophy." aria-pressed="false" style="--p:10;--c:var(--s-lab)"><i></i>Mind as mechanism</button>
+            <button class="station" type="button" data-face="tools" data-idea="Executable thought" data-p="30" data-prompt="Bug reports, feature ideas, or a tool you wish existed." aria-pressed="false" style="--p:30;--c:var(--s-tools)"><i></i>Executable thought</button>
+            <button class="station" type="button" data-face="sound" data-idea="Ordered time" data-p="50" data-prompt="Records I should hear, or something you made." aria-pressed="false" style="--p:50;--c:var(--s-sound)"><i></i>Ordered time</button>
+            <button class="station" type="button" data-face="colour" data-idea="Ordered space" data-p="70" data-prompt="Artists, exhibitions, or a response to my work." aria-pressed="false" style="--p:70;--c:var(--s-colour)"><i></i>Ordered space</button>
+            <button class="station" type="button" data-face="blog" data-idea="Connection" data-p="90" data-prompt="A reply to something I wrote, or a disagreement with it." aria-pressed="false" style="--p:90;--c:var(--s-blog)"><i></i>Connection</button>
         </div>
         <div class="slip" aria-live="polite">
           <p class="label" id="slip-face">Between stations</p>
@@ -592,7 +595,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
       stations.forEach(function (x) { x.setAttribute('aria-pressed', x === st ? 'true' : 'false'); });
       dial.classList.toggle('untuned', !st);
       if (st) {
-        needle(st.dataset.p); faceEl.textContent = st.dataset.face + '.arnavraja.in';
+        needle(st.dataset.p); faceEl.textContent = st.dataset.idea + ' / ' + st.dataset.face + '.arnavraja.in';
         promptEl.textContent = st.dataset.prompt; subj.textContent = '[' + st.dataset.face + ']';
       } else {
         needle(50); faceEl.textContent = defFace; promptEl.textContent = defPrompt; subj.textContent = '[hello]';
