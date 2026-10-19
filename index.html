@@ -21,6 +21,7 @@
   --accent: #3337A8;
   --mark: #F2B632;
   --mark-ink: #16211F;
+  --z-shelf: #3337A8; --z-projects: #8A5A00; --z-writing: #3F6B52; --z-work: #1F6F78; --z-contact: #5B4FC4;
   --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
   --body: "Source Serif 4", Georgia, "Times New Roman", serif;
   --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
@@ -29,12 +30,14 @@
   :root:not([data-theme="light"]) {
     --paper: #111513; --paper-2: #181D1A; --ink: #E7EBE7; --muted: #9AA59F;
     --rule: #2B332F; --accent: #A3A7FF; --mark: #E0A626; --mark-ink: #111513;
+    --z-shelf: #A3A7FF; --z-projects: #F2B632; --z-writing: #9CCBAE; --z-work: #6CC3CB; --z-contact: #C4C1FF;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --paper: #111513; --paper-2: #181D1A; --ink: #E7EBE7; --muted: #9AA59F;
   --rule: #2B332F; --accent: #A3A7FF; --mark: #E0A626; --mark-ink: #111513;
+    --z-shelf: #A3A7FF; --z-projects: #F2B632; --z-writing: #9CCBAE; --z-work: #6CC3CB; --z-contact: #C4C1FF;
   color-scheme: dark;
 }
 
@@ -91,6 +94,56 @@ body { margin: 0; }
 :root {
   --s-colour: #B9BCF0; --s-lab: #93AE9B; --s-tools: #F2B632;
   --s-blog: #F2F3EF; --s-sound: #3337A8; --s-work: #1F6F78;
+}
+
+/* The field: one coordinate space under the whole site.
+   A live point grid behind the page, a locator that shows where you are on the shelf's axes,
+   and an accent colour that changes with the part of the site you are in. */
+@property --accent { syntax: '<color>'; inherits: true; initial-value: #3337A8; }
+:root[data-zone="top"], :root[data-zone="shelf"] { --accent: var(--z-shelf); }
+:root[data-zone="projects"] { --accent: var(--z-projects); }
+:root[data-zone="writing"] { --accent: var(--z-writing); }
+:root[data-zone="work"] { --accent: var(--z-work); }
+:root[data-zone="contact"] { --accent: var(--z-contact); }
+@media (prefers-reduced-motion: no-preference) {
+  :root { transition: --accent 700ms ease; }
+  html { scroll-behavior: smooth; }
+}
+#field { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.wrap { position: relative; z-index: 1; }
+.map { background: var(--paper); }
+
+/* The name resolves from scattered points */
+.hero .inner { position: relative; }
+#namefx { position: absolute; left: 0; top: 0; pointer-events: none; z-index: 2; transition: opacity 450ms ease; }
+.hero h1 { transition: opacity 450ms ease; }
+:root.resolving .hero h1 { opacity: 0; }
+
+/* You are here */
+.locator {
+  position: fixed; z-index: 5;
+  right: max(16px, env(safe-area-inset-right, 0px)); bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: 10.5rem; height: 7rem; background: var(--paper); border: 1px solid var(--rule); border-radius: 4px;
+  box-shadow: 0 6px 24px -12px rgba(0, 0, 0, 0.25);
+}
+.locator svg { position: absolute; inset: 0.55rem; width: calc(100% - 1.1rem); height: calc(100% - 1.1rem); overflow: visible; }
+.locator .axis { stroke: var(--rule); stroke-dasharray: 2 3; vector-effect: non-scaling-stroke; }
+.locator .trail { fill: none; stroke: var(--accent); stroke-opacity: 0.45; stroke-width: 1.2; vector-effect: non-scaling-stroke; stroke-linejoin: round; }
+.loc-field { position: absolute; inset: 0.55rem; }
+.loc-pt { position: absolute; left: calc(var(--x) * 1%); top: calc(var(--y) * 1%); transform: translate(-50%, -50%); display: flex; align-items: center; gap: 0.6rem; text-decoration: none; color: var(--muted); padding: 0.15rem; }
+.loc-pt i { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); flex: none; }
+.loc-pt span { font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.04em; white-space: nowrap; }
+.loc-pt.right span { order: -1; }
+.loc-pt:hover, .loc-pt[aria-current="true"] { color: var(--ink); text-decoration: none; }
+.loc-here { position: absolute; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 3px var(--paper); left: calc(0.55rem + (100% - 1.1rem) * var(--hx, 0.5)); top: calc(0.55rem + (100% - 1.1rem) * var(--hy, 0.12)); pointer-events: none; }
+@media (prefers-reduced-motion: no-preference) {
+  .loc-here { transition: left 650ms cubic-bezier(.2,.8,.2,1), top 650ms cubic-bezier(.2,.8,.2,1), background-color 700ms ease; }
+}
+@media (max-width: 720px) {
+  .locator { width: 4.8rem; height: 3.4rem; opacity: 0.94; }
+  .loc-pt span { display: none; }
+  .loc-pt i { width: 4px; height: 4px; }
+  .loc-here { width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; }
 }
 
 /* Section scaffolding */
@@ -277,8 +330,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
 
 /* Load moment: the name settles in from a visible state */
 @media (prefers-reduced-motion: no-preference) {
-  h1 { animation: settle 700ms cubic-bezier(.2,.7,.2,1) both; }
-  h1 .hl { background-size: 100% 100%; animation: mark 900ms 250ms cubic-bezier(.2,.7,.2,1) both; background-repeat: no-repeat; }
+  h1 .hl { background-size: 100% 100%; animation: mark 900ms 1250ms cubic-bezier(.2,.7,.2,1) both; background-repeat: no-repeat; }
   @keyframes settle { from { letter-spacing: -0.02em; opacity: 0.6; } to { letter-spacing: -0.045em; opacity: 1; } }
   @keyframes mark { from { background-size: 0% 100%; } to { background-size: 100% 100%; } }
 }
@@ -303,6 +355,24 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
 </head>
 <body>
 
+<canvas id="field" aria-hidden="true"></canvas>
+<nav class="locator" id="locator" aria-label="Where you are on the shelf's axes">
+  <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+    <line class="axis" x1="50" y1="0" x2="50" y2="100"></line>
+    <line class="axis" x1="0" y1="50" x2="100" y2="50"></line>
+    <polyline class="trail" id="loc-trail" points=""></polyline>
+  </svg>
+  <div class="loc-field">
+    <a class="loc-pt" href="#top" data-area="top" style="--x:50;--y:6"><i></i><span>name</span></a>
+    <a class="loc-pt" href="#shelf" data-area="shelf" style="--x:50;--y:50"><i></i><span>shelf</span></a>
+    <a class="loc-pt" href="#projects" data-area="projects" style="--x:14;--y:24"><i></i><span>projects</span></a>
+    <a class="loc-pt" href="#writing" data-area="writing" style="--x:22;--y:86"><i></i><span>writing</span></a>
+    <a class="loc-pt right" href="#work" data-area="work" style="--x:86;--y:28"><i></i><span>work</span></a>
+    <a class="loc-pt right" href="#contact" data-area="contact" style="--x:84;--y:80"><i></i><span>contact</span></a>
+  </div>
+  <span class="loc-here" id="loc-here" aria-hidden="true"></span>
+</nav>
+
 <div class="wrap">
 
 <header class="top">
@@ -322,7 +392,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
 
 <main id="top">
 
-<div class="hero">
+<div class="hero" data-section="top">
   <div class="inner">
     <p class="sig"><b>arnav.raja</b>(code, papers, sound, colour, ideas)</p>
     <h1>Arnav<br><span class="hl">Raja</span></h1>
@@ -331,7 +401,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   </div>
 </div>
 
-<section id="shelf" aria-labelledby="shelf-h">
+<section id="shelf" data-section="shelf" aria-labelledby="shelf-h">
   <div class="inner">
     <div class="sec-head">
       <p class="label">The shelf</p>
@@ -366,7 +436,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   </div>
 </section>
 
-<section id="projects" aria-labelledby="projects-h">
+<section id="projects" data-section="projects" aria-labelledby="projects-h">
   <div class="inner">
     <div class="sec-head">
       <p class="label">Projects</p>
@@ -416,7 +486,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   </div>
 </section>
 
-<section id="writing" aria-labelledby="writing-h">
+<section id="writing" data-section="writing" aria-labelledby="writing-h">
   <div class="inner">
     <div class="sec-head">
       <p class="label">Writing</p>
@@ -447,7 +517,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   </div>
 </section>
 
-<section id="work" class="minor" aria-labelledby="work-h">
+<section id="work" data-section="work" class="minor" aria-labelledby="work-h">
   <div class="inner">
     <div class="sec-head">
       <p class="label">Work</p>
@@ -481,7 +551,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   </div>
 </section>
 
-<section id="contact" aria-labelledby="contact-h">
+<section id="contact" data-section="contact" aria-labelledby="contact-h">
   <div class="inner">
     <div class="sec-head">
       <p class="label">Contact</p>
@@ -678,6 +748,135 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
       svg.appendChild(el('circle', { class: lit ? 'd on' : 'd', cx: c[0], cy: c[1], r: lit ? 2.6 : 1.6 }));
     });
   });
+})();
+</script>
+<script>
+/* The field, the resolving name and the locator */
+(function () {
+  var root = document.documentElement;
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function css(name) { return getComputedStyle(root).getPropertyValue(name).trim(); }
+
+  /* 1. The field */
+  var cv = document.getElementById('field');
+  if (cv && cv.getContext) {
+    var ctx = cv.getContext('2d'), W = 0, H = 0, pts = [], mx = -9999, my = -9999, queued = false, until = 0;
+    var build = function () {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth; H = window.innerHeight;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var gap = W < 720 ? 34 : 26; pts = [];
+      for (var y = gap / 2; y < H; y += gap) for (var x = gap / 2; x < W; x += gap) pts.push({ x: x, y: y, ox: 0, oy: 0 });
+      kick();
+    };
+    var kick = function () { if (!queued) { queued = true; requestAnimationFrame(frame); } };
+    var frame = function (now) {
+      queued = false;
+      var muted = css('--muted'), accent = css('--accent'), R = 150, moving = false;
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = muted; ctx.globalAlpha = 0.28; ctx.beginPath();
+      var near = [];
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i], dx = p.x - mx, dy = p.y - my, d = Math.sqrt(dx * dx + dy * dy), tx = 0, ty = 0;
+        if (d < R && d > 0.01) { var f = Math.pow(1 - d / R, 2) * 22; tx = dx / d * f; ty = dy / d * f; }
+        p.ox += (tx - p.ox) * 0.16; p.oy += (ty - p.oy) * 0.16;
+        if (Math.abs(tx - p.ox) > 0.05 || Math.abs(ty - p.oy) > 0.05) moving = true;
+        var X = p.x + p.ox, Y = p.y + p.oy;
+        if (d < R) near.push(X, Y, 1 - d / R); else ctx.rect(X - 0.6, Y - 0.6, 1.2, 1.2);
+      }
+      ctx.fill();
+      ctx.fillStyle = accent;
+      for (var j = 0; j < near.length; j += 3) { var k = near[j + 2]; ctx.globalAlpha = 0.3 + 0.55 * k; var s = 1.2 + 1.4 * k; ctx.fillRect(near[j] - s / 2, near[j + 1] - s / 2, s, s); }
+      ctx.globalAlpha = 1;
+      if (moving || now < until) kick();
+    };
+    if (!reduce) {
+      window.addEventListener('pointermove', function (e) { if (e.pointerType === 'touch') return; mx = e.clientX; my = e.clientY; kick(); }, { passive: true });
+      document.addEventListener('pointerleave', function () { mx = my = -9999; kick(); });
+    }
+    var rt; window.addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(build, 120); });
+    if (window.matchMedia) { var mq = matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', kick); }
+    new MutationObserver(function () { until = performance.now() + 800; kick(); }).observe(root, { attributes: true, attributeFilter: ['data-zone', 'data-theme'] });
+    build();
+  }
+
+  /* 2. The name resolves from scattered points */
+  (function () {
+    var h1 = document.querySelector('.hero h1'), host = h1 && h1.parentElement;
+    if (!h1 || !host || reduce || !document.createElement('canvas').getContext) return;
+    root.classList.add('resolving');
+    var shown = false;
+    function reveal() { if (shown) return; shown = true; root.classList.remove('resolving'); }
+    setTimeout(reveal, 3200);
+    var fonts = document.fonts && document.fonts.ready ? Promise.race([document.fonts.ready, new Promise(function (r) { setTimeout(r, 1200); })]) : Promise.resolve();
+    fonts.then(function () { try { run(); } catch (e) { reveal(); } });
+    function run() {
+      var hr = host.getBoundingClientRect(), W = Math.ceil(hr.width), H = Math.ceil(hr.height);
+      if (!W || !H) { reveal(); return; }
+      var off = document.createElement('canvas'); off.width = W; off.height = H;
+      var o = off.getContext('2d'), cs = getComputedStyle(h1);
+      o.font = cs.fontWeight + ' ' + cs.fontSize + ' ' + cs.fontFamily; o.fillStyle = '#000'; o.textBaseline = 'alphabetic';
+      var walker = document.createTreeWalker(h1, NodeFilter.SHOW_TEXT), node, range = document.createRange();
+      while ((node = walker.nextNode())) {
+        for (var i = 0; i < node.length; i++) {
+          var ch = node.data[i]; if (!ch.trim()) continue;
+          range.setStart(node, i); range.setEnd(node, i + 1);
+          var r = range.getBoundingClientRect(), m = o.measureText(ch);
+          var asc = m.fontBoundingBoxAscent || m.actualBoundingBoxAscent || r.height * 0.8;
+          var desc = m.fontBoundingBoxDescent || 0;
+          o.fillText(ch, r.left - hr.left, r.top - hr.top + (r.height - asc - desc) / 2 + asc);
+        }
+      }
+      var fs = parseFloat(cs.fontSize) || 100, step = Math.max(3, Math.round(fs / 26));
+      var data = o.getImageData(0, 0, W, H).data, parts = [];
+      for (var y = 0; y < H; y += step) for (var x = 0; x < W; x += step) {
+        if (data[(y * W + x) * 4 + 3] > 128) parts.push({ tx: x, ty: y, sx: Math.random() * W, sy: Math.random() * H, d: Math.random() * 260 });
+      }
+      if (!parts.length) { reveal(); return; }
+      var dpr = Math.min(window.devicePixelRatio || 1, 2), c = document.createElement('canvas');
+      c.id = 'namefx'; c.setAttribute('aria-hidden', 'true'); c.width = W * dpr; c.height = H * dpr; c.style.width = W + 'px'; c.style.height = H + 'px';
+      host.appendChild(c);
+      var g = c.getContext('2d'); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var ink = css('--ink'), size = step * 0.78, dur = 950, t0 = performance.now();
+      function draw(now) {
+        var t = now - t0, done = true;
+        g.clearRect(0, 0, W, H); g.fillStyle = ink;
+        for (var k = 0; k < parts.length; k++) {
+          var p = parts[k], u = Math.min(1, Math.max(0, (t - p.d) / dur)); if (u < 1) done = false;
+          var e = 1 - Math.pow(1 - u, 3);
+          g.globalAlpha = 0.25 + 0.75 * e;
+          g.fillRect(p.sx + (p.tx - p.sx) * e, p.sy + (p.ty - p.sy) * e, size, size);
+        }
+        if (!done) { requestAnimationFrame(draw); return; }
+        reveal(); c.style.opacity = '0'; setTimeout(function () { c.remove(); }, 500);
+      }
+      requestAnimationFrame(draw);
+    }
+  })();
+
+  /* 3 and 4. Where you are, and the colour of the part you are in */
+  var areas = [].slice.call(document.querySelectorAll('[data-section]'));
+  var locPts = {}, links = {};
+  [].slice.call(document.querySelectorAll('.loc-pt')).forEach(function (a) {
+    locPts[a.dataset.area] = [parseFloat(a.style.getPropertyValue('--x')), parseFloat(a.style.getPropertyValue('--y'))];
+    links[a.dataset.area] = a;
+  });
+  var here = document.getElementById('loc-here'), trail = document.getElementById('loc-trail'), path = [];
+  function go(area) {
+    if (!locPts[area] || root.dataset.zone === area) return;
+    root.dataset.zone = area;
+    here.style.setProperty('--hx', locPts[area][0] / 100); here.style.setProperty('--hy', locPts[area][1] / 100);
+    Object.keys(links).forEach(function (k) { links[k].setAttribute('aria-current', k === area ? 'true' : 'false'); });
+    path.push(locPts[area].join(',')); if (path.length > 7) path.shift();
+    trail.setAttribute('points', path.join(' '));
+  }
+  go('top');
+  if (window.IntersectionObserver) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) go(e.target.dataset.section); });
+    }, { rootMargin: '-48% 0px -48% 0px' });
+    areas.forEach(function (a) { io.observe(a); });
+  }
 })();
 </script>
 </body>
