@@ -203,12 +203,12 @@ p { margin: 0 0 1rem; max-width: 40rem; }
 .zroot { position: relative; font-family: var(--mono); font-size: 0.95rem; font-weight: 500; margin: 0; padding-left: calc(11px + var(--gapx)); line-height: 1.4; }
 .zroot::before { content: ""; position: absolute; left: 0; top: calc(0.7em - 5.5px); width: 11px; height: 11px; border-radius: 50%; background: var(--ink); }
 .zroot span { color: var(--muted); font-weight: 400; }
-.zroot::after { content: ""; position: absolute; left: 5px; top: 0.7em; bottom: 0; width: 1px; background: var(--ink); }
+.tree { position: relative; }
+.trunk { position: absolute; left: 5px; top: 0.7em; bottom: 0; width: 1px; background: var(--ink); pointer-events: none; }
 .zone { position: relative; list-style: none; margin: 0 0 0 5px; padding: 1.1rem 0 0; }
-.zone::before { content: ""; position: absolute; left: 0; top: 0; height: 1.1rem; width: 1px; background: var(--ink); }
-.branch { position: relative; padding: 0 0 2.4rem calc(var(--tick) + var(--gapx) + 0.35rem); border-left: 1px solid var(--ink); min-width: 0; }
-.branch:last-child { border-left-color: transparent; padding-bottom: 0.25rem; }
-.branch::before { content: ""; position: absolute; left: -1px; top: 0; width: var(--tick); height: var(--mid); border-left: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.branch { position: relative; padding: 0 0 2.4rem calc(var(--tick) + var(--gapx) + 0.35rem); min-width: 0; }
+.branch:last-child { padding-bottom: 0.25rem; }
+.branch::before { content: ""; position: absolute; left: 0; top: var(--mid); width: var(--tick); height: 1px; background: var(--ink); }
 .branch::after { content: ""; position: absolute; left: calc(var(--tick) - 3px); top: calc(var(--mid) - 2.5px); width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .bhead .idea { font-family: var(--display); font-style: italic; font-size: 1rem; color: var(--accent); }
 .bhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.9rem; }
@@ -456,6 +456,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
       <div class="col">
         <!-- EDIT: change "status" to "status live" once a project is up. -->
         <div class="tree">
+        <span class="trunk" id="trunk" aria-hidden="true"></span>
         <p class="zroot">arnavraja.in <span>/ projects</span></p>
         <ul class="zone">
           <li class="branch">
@@ -849,6 +850,25 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     }, { rootMargin: '-48% 0px -48% 0px' });
     areas.forEach(function (a) { io.observe(a); });
   }
+})();
+</script>
+<script>
+/* One continuous trunk: from the centre of the root dot to the last branch's tick */
+(function () {
+  var tree = document.querySelector('.tree'), trunk = document.getElementById('trunk');
+  if (!tree || !trunk) return;
+  function place() {
+    var root = tree.querySelector('.zroot'), branches = tree.querySelectorAll('.branch');
+    if (!root || !branches.length) return;
+    var tr = tree.getBoundingClientRect(), dot = getComputedStyle(root, '::before');
+    var top = root.getBoundingClientRect().top - tr.top + parseFloat(dot.top) + parseFloat(dot.height) / 2;
+    var last = branches[branches.length - 1], tick = getComputedStyle(last, '::before');
+    var bottom = last.getBoundingClientRect().top - tr.top + parseFloat(tick.top) + 1;
+    trunk.style.top = top + 'px'; trunk.style.bottom = 'auto'; trunk.style.height = Math.max(0, bottom - top) + 'px';
+  }
+  place();
+  if (window.ResizeObserver) new ResizeObserver(place).observe(tree); else window.addEventListener('resize', place);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
 })();
 </script>
 </body>
