@@ -293,7 +293,7 @@ p { margin: 0 0 1rem; max-width: 40rem; }
     repeating-linear-gradient(90deg, var(--muted) 0 1px, transparent 1px 50px) top / 100% 70% no-repeat,
     repeating-linear-gradient(90deg, var(--rule) 0 1px, transparent 1px 10px) top / 100% 40% no-repeat;
 }
-.needle { position: absolute; top: 0.3rem; height: 3.2rem; width: 2px; margin-left: -1px; background: var(--accent); left: calc(var(--n, 50) * 1%); pointer-events: none; z-index: 2; }
+.needle { position: absolute; top: 0.3rem; height: 3.2rem; width: 2px; margin-left: -1px; background: var(--accent); left: calc(var(--n, 33.5) * 1%); pointer-events: none; z-index: 2; }
 .needle::before { content: ""; position: absolute; top: -0.35rem; left: -4px; border: 5px solid transparent; border-top: 6px solid var(--accent); border-bottom: 0; }
 .dial.untuned .needle { opacity: 0.45; }
 @media (prefers-reduced-motion: no-preference) {
@@ -420,16 +420,16 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
           <span class="ax ax-b">Understanding</span>
           <span class="ax ax-l">Abstract</span>
           <span class="ax ax-r">Human</span>
-          <a class="node" id="n-software" style="--x:20;--y:20;--mx:24;--my:10" data-links="ai maths" data-note="Building things that run. The place where an idea is tested by whether it works." data-subject="Software" aria-label="Executable thought (software)" href="https://blog.arnavraja.in/tag/software"><span class="dot"></span><span class="nm">Executable thought</span></a>
-          <a class="node" id="n-ai" style="--x:40;--y:64;--mx:22;--my:58" data-links="software maths philosophy" data-note="Mostly studied, rarely built. Machines that learn, sitting between code, mathematics and old questions about minds. It sits low on the map because I read far more of it than I make." data-subject="AI and machine learning" aria-label="Mind as mechanism (ai and machine learning)" href="https://blog.arnavraja.in/tag/ai"><span class="dot"></span><span class="nm">Mind as mechanism</span></a>
-          <a class="node" id="n-maths" style="--x:12;--y:72;--mx:20;--my:72" data-links="software ai music philosophy economics" data-note="Studied for its own sake rather than produced. The language underneath code, harmony, markets and argument." data-subject="Mathematics" aria-label="Structure (mathematics)" href="https://blog.arnavraja.in/tag/mathematics"><span class="dot"></span><span class="nm">Structure</span></a>
-          <a class="node" id="n-music" style="--x:70;--y:38;--mx:80;--my:36" data-links="maths art anthropology" data-note="Mostly listening, with some making. Pattern you can hear. It sits lower on the map because I take in more of it than I make." data-subject="Music" aria-label="Ordered time (music)" href="https://blog.arnavraja.in/tag/music"><span class="dot"></span><span class="nm">Ordered time</span></a>
-          <a class="node" id="n-art" style="--x:80;--y:14;--mx:72;--my:9" data-links="music anthropology philosophy" data-note="Mostly making, with some looking. Pattern you can see. It sits high on the map because I make more of it than I take in." data-subject="Visual art" aria-label="Ordered space (visual art)" href="https://blog.arnavraja.in/tag/art"><span class="dot"></span><span class="nm">Ordered space</span></a>
-          <a class="node hub" id="n-ideas" style="--x:50;--y:50;--mx:50;--my:50" data-links="software ai maths music art philosophy politics economics anthropology" data-note="Personal essays and everything else. The one point that touches all the others." data-subject="Ideas" aria-label="Connection (ideas)" href="https://blog.arnavraja.in/tag/ideas"><span class="dot"></span><span class="nm">Connection</span></a>
-          <a class="node" id="n-philosophy" style="--x:30;--y:88;--mx:32;--my:84" data-links="maths ai art politics" data-note="Read and studied rather than written. Mind, ethics and meaning, the questions behind everything else here." data-subject="Philosophy" aria-label="First questions (philosophy)" href="https://blog.arnavraja.in/tag/philosophy"><span class="dot"></span><span class="nm">First questions</span></a>
-          <a class="node" id="n-economics" style="--x:62;--y:80;--mx:58;--my:78" data-links="maths politics anthropology" data-note="Markets, development and the Indian economy. Mathematics applied to how people choose." data-subject="Economics" aria-label="Scarcity (economics)" href="https://blog.arnavraja.in/tag/economy"><span class="dot"></span><span class="nm">Scarcity</span></a>
-          <a class="node" id="n-politics" style="--x:84;--y:64;--mx:72;--my:64" data-links="philosophy economics anthropology" data-note="Institutions, policy and power. Philosophy meeting the real world." data-subject="Politics" aria-label="Power and consent (politics)" href="https://blog.arnavraja.in/tag/politics"><span class="dot"></span><span class="nm">Power and consent</span></a>
-          <a class="node" id="n-anthropology" style="--x:86;--y:84;--mx:74;--my:86" data-links="music art politics economics" data-note="Culture, people and how societies work. Where music and art come from." data-subject="Anthropology" aria-label="Shared meaning (anthropology)" href="https://blog.arnavraja.in/tag/anthropology"><span class="dot"></span><span class="nm">Shared meaning</span></a>
+          <a class="node" id="n-software" style="--x:20;--y:20;--mx:24;--my:10" data-links="ai maths" data-note="Building things that run. The place where an idea is tested by whether it works." data-subject="Software" aria-label="Executable thought (software)" href="https://mind.arnavraja.in/tag/software"><span class="dot"></span><span class="nm">Executable thought</span></a>
+          <a class="node" id="n-ai" style="--x:40;--y:64;--mx:22;--my:58" data-links="software maths philosophy" data-note="Mostly studied, rarely built. Machines that learn, sitting between code, mathematics and old questions about minds. It sits low on the map because I read far more of it than I make." data-subject="AI and machine learning" aria-label="Mind as mechanism (ai and machine learning)" href="https://mind.arnavraja.in/tag/ai"><span class="dot"></span><span class="nm">Mind as mechanism</span></a>
+          <a class="node" id="n-maths" style="--x:12;--y:72;--mx:20;--my:72" data-links="software ai music philosophy economics" data-note="Studied for its own sake rather than produced. The language underneath code, harmony, markets and argument." data-subject="Mathematics" aria-label="Structure (mathematics)" href="https://mind.arnavraja.in/tag/mathematics"><span class="dot"></span><span class="nm">Structure</span></a>
+          <a class="node" id="n-music" style="--x:70;--y:38;--mx:80;--my:36" data-links="maths art anthropology" data-note="Mostly listening, with some making. Pattern you can hear. It sits lower on the map because I take in more of it than I make." data-subject="Music" aria-label="Ordered time (music)" href="https://mind.arnavraja.in/tag/music"><span class="dot"></span><span class="nm">Ordered time</span></a>
+          <a class="node" id="n-art" style="--x:80;--y:14;--mx:72;--my:9" data-links="music anthropology philosophy" data-note="Mostly making, with some looking. Pattern you can see. It sits high on the map because I make more of it than I take in." data-subject="Visual art" aria-label="Ordered space (visual art)" href="https://mind.arnavraja.in/tag/art"><span class="dot"></span><span class="nm">Ordered space</span></a>
+          <a class="node hub" id="n-ideas" style="--x:50;--y:50;--mx:50;--my:50" data-links="software ai maths music art philosophy politics economics anthropology" data-note="Personal essays and everything else. The one point that touches all the others." data-subject="Ideas" aria-label="Connection (ideas)" href="https://mind.arnavraja.in/tag/ideas"><span class="dot"></span><span class="nm">Connection</span></a>
+          <a class="node" id="n-philosophy" style="--x:30;--y:88;--mx:32;--my:84" data-links="maths ai art politics" data-note="Read and studied rather than written. Mind, ethics and meaning, the questions behind everything else here." data-subject="Philosophy" aria-label="First questions (philosophy)" href="https://mind.arnavraja.in/tag/philosophy"><span class="dot"></span><span class="nm">First questions</span></a>
+          <a class="node" id="n-economics" style="--x:62;--y:80;--mx:58;--my:78" data-links="maths politics anthropology" data-note="Markets, development and the Indian economy. Mathematics applied to how people choose." data-subject="Economics" aria-label="Scarcity (economics)" href="https://mind.arnavraja.in/tag/economy"><span class="dot"></span><span class="nm">Scarcity</span></a>
+          <a class="node" id="n-politics" style="--x:84;--y:64;--mx:72;--my:64" data-links="philosophy economics anthropology" data-note="Institutions, policy and power. Philosophy meeting the real world." data-subject="Politics" aria-label="Power and consent (politics)" href="https://mind.arnavraja.in/tag/politics"><span class="dot"></span><span class="nm">Power and consent</span></a>
+          <a class="node" id="n-anthropology" style="--x:86;--y:84;--mx:74;--my:86" data-links="music art politics economics" data-note="Culture, people and how societies work. Where music and art come from." data-subject="Anthropology" aria-label="Shared meaning (anthropology)" href="https://mind.arnavraja.in/tag/anthropology"><span class="dot"></span><span class="nm">Shared meaning</span></a>
         </div>
         <div class="mapcap" id="mapcap" aria-live="polite" hidden>
           <p class="mc-t" id="mct"></p>
@@ -454,10 +454,10 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
         <p class="zroot">arnavraja.in <span>/ projects</span></p>
         <ul class="zone">
           <li class="branch">
-            <div class="bhead"><a class="sub" href="https://mind.arnavraja.in">mind<span>.arnavraja.in</span></a><span class="idea">Thought and mechanism</span><span class="status">In progress</span></div>
+            <div class="bhead"><a class="sub" href="https://mind.arnavraja.in">mind<span>.arnavraja.in</span></a><span class="idea">Ordered thought</span><span class="status">In progress</span></div>
             <div class="balance" aria-hidden="true"><i style="flex:1"></i><i style="flex:1"></i></div>
             <div class="halves">
-              <div class="half out"><span class="k">Built</span><p>Ambitious, full-scale software I have built and made public, and the occasional experiment run to check that I really understand something I have been reading.</p></div>
+              <div class="half out"><span class="k">Written and built</span><p>Essays and notes filed under the ten ideas, ambitious full-scale software I have built and made public, and the occasional experiment.</p></div>
               <div class="half in"><span class="k">Studied</span><p>Papers, books and courses on artificial intelligence, machine learning, mathematics and philosophy of mind, with my notes on each.</p></div>
             </div>
           </li>
@@ -492,7 +492,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     </div>
     <div class="sec-body">
       <div class="col">
-        <p>Writing on the blog is sorted by how far an idea has grown, not by date, and filed under the ten ideas on the shelf, from Executable thought to Shared meaning. Every piece starts at Connection.</p>
+        <p>Writing on mind.arnavraja.in is sorted by how far an idea has grown, not by date, and filed under the ten ideas on the shelf, from Executable thought to Shared meaning. Every piece starts at Connection.</p>
         <!-- EDIT: replace these working titles with your published posts. data-subjects uses the names from the map: software ai maths music art ideas philosophy economics politics anthropology -->
         <div class="ripen">
           <div class="stage seed">
@@ -505,7 +505,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
             <div class="stage-h"><span class="len">Finished</span><h3>Planes</h3><p>Essays worked through in every direction, which I still stand behind.</p></div>
           </div>
         </div>
-        <a class="btn" href="https://blog.arnavraja.in">Read the blog at blog.arnavraja.in</a>
+        <a class="btn" href="https://mind.arnavraja.in/#writing">Read the writing at mind.arnavraja.in</a>
       </div>
     </div>
   </div>
@@ -523,10 +523,9 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
         <div class="dial" id="dial" role="group" aria-label="Choose what your message is about">
           <div class="band" aria-hidden="true"></div>
           <span class="needle" id="needle" aria-hidden="true"></span>
-            <button class="station" type="button" data-face="mind" data-idea="Thought and mechanism" data-p="12" data-prompt="A paper I should read, a question about AI, mathematics or philosophy, or something about software I have built." aria-pressed="false" style="--p:12;--c:var(--s-lab)"><i></i>Thought and mechanism</button>
-            <button class="station" type="button" data-face="sound" data-idea="Ordered time" data-p="37" data-prompt="Records I should hear, or something you made." aria-pressed="false" style="--p:37;--c:var(--s-sound)"><i></i>Ordered time</button>
-            <button class="station" type="button" data-face="colour" data-idea="Ordered space" data-p="63" data-prompt="Artists, exhibitions, or a response to my work." aria-pressed="false" style="--p:63;--c:var(--s-colour)"><i></i>Ordered space</button>
-            <button class="station" type="button" data-face="blog" data-idea="Connection" data-p="88" data-prompt="A reply to something I wrote, or a disagreement with it." aria-pressed="false" style="--p:88;--c:var(--s-blog)"><i></i>Connection</button>
+            <button class="station" type="button" data-face="mind" data-idea="Ordered thought" data-p="17" data-prompt="A reply to something I wrote, a paper I should read, or a question about software, AI, mathematics or philosophy." aria-pressed="false" style="--p:17;--c:var(--s-lab)"><i></i>Ordered thought</button>
+            <button class="station" type="button" data-face="sound" data-idea="Ordered time" data-p="50" data-prompt="Records I should hear, or something you made." aria-pressed="false" style="--p:50;--c:var(--s-sound)"><i></i>Ordered time</button>
+            <button class="station" type="button" data-face="colour" data-idea="Ordered space" data-p="83" data-prompt="Artists, exhibitions, or a response to my work." aria-pressed="false" style="--p:83;--c:var(--s-colour)"><i></i>Ordered space</button>
         </div>
         <div class="slip" aria-live="polite">
           <p class="label" id="slip-face">Between stations</p>
@@ -540,7 +539,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
         <ul class="elsewhere">
           <li><a href="https://github.com/">GitHub</a></li>
           <li><a href="https://www.linkedin.com/">LinkedIn</a></li>
-          <li><a href="https://blog.arnavraja.in">Blog</a></li>
+          <li><a href="https://mind.arnavraja.in/#writing">Writing</a></li>
         </ul>
       </div>
     </div>
@@ -593,7 +592,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
         needle(st.dataset.p); faceEl.textContent = st.dataset.idea + ' / ' + st.dataset.face + '.arnavraja.in';
         promptEl.textContent = st.dataset.prompt; subj.textContent = '[' + st.dataset.face + ']';
       } else {
-        needle(50); faceEl.textContent = defFace; promptEl.textContent = defPrompt; subj.textContent = '[hello]';
+        needle(33.5); faceEl.textContent = defFace; promptEl.textContent = defPrompt; subj.textContent = '[hello]';
       }
     }
     stations.forEach(function (st) {
