@@ -198,15 +198,21 @@ p { margin: 0 0 1rem; max-width: 40rem; }
 .note { font-family: var(--mono); font-size: 0.78rem; color: var(--muted); margin-top: 1rem; }
 
 /* Projects: a domain tree; every branch has a made half and a taken-in half */
-.zroot { font-family: var(--mono); font-size: 0.95rem; font-weight: 500; margin: 0 0 0.9rem; }
+/* The tree: one trunk from the root dot, a tick into the middle of each branch name */
+.tree { --trunk: 0.3rem; --tick: 1.35rem; --gapx: 0.55rem; --F: clamp(1.6rem, 3.6vw, 2.2rem); --mid: calc(var(--F) * 0.56); }
+.zroot { position: relative; font-family: var(--mono); font-size: 0.95rem; font-weight: 500; margin: 0; padding-left: calc(var(--trunk) * 2 + var(--gapx)); line-height: 1.4; }
+.zroot::before { content: ""; position: absolute; left: 0; top: calc(0.7em - var(--trunk)); width: calc(var(--trunk) * 2); height: calc(var(--trunk) * 2); border-radius: 50%; background: var(--ink); }
 .zroot span { color: var(--muted); font-weight: 400; }
-.zone { list-style: none; margin: 0; padding: 0 0 0 0.35rem; }
-.branch { position: relative; padding: 0 0 2.4rem 2.1rem; border-left: 1px solid var(--ink); min-width: 0; }
-.branch:last-child { border-left-color: transparent; padding-bottom: 0.5rem; }
-.branch::before { content: ""; position: absolute; left: -1px; top: 0; width: 1.5rem; height: 1rem; border-left: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.zroot::after { content: ""; position: absolute; left: calc(var(--trunk) - 0.5px); top: 0.7em; bottom: 0; border-left: 1px solid var(--ink); }
+.zone { position: relative; list-style: none; margin: 0 0 0 calc(var(--trunk) - 0.5px); padding: 1.1rem 0 0; }
+.zone::before { content: ""; position: absolute; left: 0; top: 0; height: 1.1rem; border-left: 1px solid var(--ink); }
+.branch { position: relative; padding: 0 0 2.4rem calc(var(--tick) + var(--gapx) + 0.35rem); border-left: 1px solid var(--ink); min-width: 0; margin-left: -0.5px; }
+.branch:last-child { border-left-color: transparent; padding-bottom: 0.25rem; }
+.branch::before { content: ""; position: absolute; left: -1px; top: 0; width: var(--tick); height: var(--mid); border-left: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+.branch::after { content: ""; position: absolute; left: calc(var(--tick) - 3px); top: calc(var(--mid) - 2.5px); width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
 .bhead .idea { font-family: var(--display); font-style: italic; font-size: 1rem; color: var(--accent); }
 .bhead { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25rem 0.9rem; }
-.sub { font-family: var(--display); font-weight: 800; font-size: clamp(1.6rem, 3.6vw, 2.2rem); letter-spacing: -0.035em; line-height: 1; color: var(--ink); text-decoration: none; }
+.sub { font-family: var(--display); font-weight: 800; font-size: var(--F, 2rem); letter-spacing: -0.035em; line-height: 1; color: var(--ink); text-decoration: none; }
 .sub span { font-family: var(--mono); font-weight: 400; font-size: 0.8rem; letter-spacing: 0; color: var(--muted); }
 .sub:hover { color: var(--accent); text-decoration: none; }
 .status { margin-left: auto; font-family: var(--mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); display: inline-flex; align-items: center; gap: 0.45rem; }
@@ -347,8 +353,10 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   .node .nm { font-size: 0.86rem; white-space: normal; max-width: 6.2rem; text-align: center; line-height: 1.1; }
   .mapcap { grid-template-columns: minmax(0, 1fr); }
   .halves { grid-template-columns: minmax(0, 1fr); }
-  .branch { padding-left: 1.6rem; }
-  .branch::before { width: 1.1rem; }
+  .tree { --tick: 1rem; --gapx: 0.45rem; }
+  .bhead { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 0.35rem 0.75rem; }
+  .bhead .sub { grid-column: 1 / -1; }
+  .bhead .status { margin-left: 0; }
   .ripen { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
   .svc { grid-template-columns: minmax(0, 1fr); }
   .station { font-size: 0.7rem; max-width: 4.4rem; }
@@ -447,6 +455,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     <div class="sec-body">
       <div class="col">
         <!-- EDIT: change "status" to "status live" once a project is up. -->
+        <div class="tree">
         <p class="zroot">arnavraja.in <span>/ projects</span></p>
         <ul class="zone">
           <li class="branch">
@@ -482,7 +491,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
             </div>
           </li>
         </ul>
-        <p class="note">Also on this domain: blog.arnavraja.in for writing.</p>
+        </div>
       </div>
     </div>
   </div>
