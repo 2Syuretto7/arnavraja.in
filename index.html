@@ -382,6 +382,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     <a class="loc-pt" href="#shelf" data-area="shelf" style="--x:50;--y:50"><i></i><span>shelf</span></a>
     <a class="loc-pt" href="#projects" data-area="projects" style="--x:12;--y:28"><i></i><span>projects</span></a>
     <a class="loc-pt" href="#writing" data-area="writing" style="--x:18;--y:92"><i></i><span>writing</span></a>
+    <a class="loc-pt right" href="#work" data-area="work" style="--x:88;--y:30"><i></i><span>work</span></a>
     <a class="loc-pt right" href="#contact" data-area="contact" style="--x:88;--y:72"><i></i><span>contact</span></a>
   </div>
   <span class="loc-here" id="loc-here" aria-hidden="true"></span>
@@ -511,6 +512,41 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   </div>
 </section>
 
+<section id="work" data-section="work" class="minor" aria-labelledby="work-h">
+  <div class="inner">
+    <div class="sec-head">
+      <p class="label">Work</p>
+      <h2 id="work-h">For people building things</h2>
+    </div>
+    <div class="sec-body">
+      <div class="col">
+        <p class="work-intro">Each job turns noise into signal. Something tangled comes in, and something clear goes out.</p>
+        <!-- EDIT: adjust services to what you actually offer -->
+        <ul class="turns">
+          <li class="svc">
+            <div class="sig-pic"><svg viewBox="0 0 120 48" aria-hidden="true"><path class="before" d="M5 30 C 15 2, 27 46, 19 22 S 41 4, 31 36 S 9 42, 45 12"/><path class="ar" d="M53 24 H67 M63 20 L67 24 L63 28"/><path class="after" pathLength="1" d="M74 38 H86 V14 H100 V30 H116"/></svg></div>
+            <div class="svc-text">
+              <h3>Software development</h3>
+              <p><span class="k">You bring</span>An idea, a process done by hand, or a tool that has outgrown its spreadsheet.</p>
+              <p><span class="k">You get</span>A website, web app or internal tool, built cleanly and handed over with documentation.</p>
+            </div>
+          </li>
+          <li class="svc">
+            <div class="sig-pic"><svg viewBox="0 0 120 48" aria-hidden="true"><circle class="pt" cx="6.0" cy="24.6" r="1.9"/><circle class="pt" cx="10.0" cy="26.0" r="1.9"/><circle class="pt" cx="14.0" cy="17.7" r="1.9"/><circle class="pt" cx="18.0" cy="18.1" r="1.9"/><circle class="pt" cx="22.0" cy="13.3" r="1.9"/><circle class="pt" cx="26.0" cy="7.7" r="1.9"/><circle class="pt" cx="30.0" cy="10.1" r="1.9"/><circle class="pt" cx="34.0" cy="15.3" r="1.9"/><circle class="pt" cx="38.0" cy="25.0" r="1.9"/><circle class="pt" cx="42.0" cy="31.3" r="1.9"/><path class="ar" d="M53 24 H67 M63 20 L67 24 L63 28"/><circle class="pt" cx="78.0" cy="29.5" r="1.9"/><circle class="pt" cx="82.0" cy="22.1" r="1.9"/><circle class="pt" cx="86.0" cy="21.1" r="1.9"/><circle class="pt" cx="90.0" cy="12.8" r="1.9"/><circle class="pt" cx="94.0" cy="14.5" r="1.9"/><circle class="pt" cx="98.0" cy="13.2" r="1.9"/><circle class="pt" cx="102.0" cy="12.6" r="1.9"/><circle class="pt" cx="106.0" cy="19.9" r="1.9"/><circle class="pt" cx="110.0" cy="21.2" r="1.9"/><circle class="pt" cx="114.0" cy="30.3" r="1.9"/><path class="after" pathLength="1" d="M76 34 L77.0 32.4 L78.0 30.9 L79.0 29.3 L80.0 27.8 L81.0 26.3 L82.0 24.9 L83.0 23.6 L84.0 22.2 L85.0 21.0 L86.0 19.9 L87.0 18.8 L88.0 17.8 L89.0 16.9 L90.0 16.2 L91.0 15.5 L92.0 15.0 L93.0 14.6 L94.0 14.2 L95.0 14.1 L96.0 14.0 L97.0 14.1 L98.0 14.2 L99.0 14.6 L100.0 15.0 L101.0 15.5 L102.0 16.2 L103.0 16.9 L104.0 17.8 L105.0 18.8 L106.0 19.9 L107.0 21.0 L108.0 22.2 L109.0 23.6 L110.0 24.9 L111.0 26.3 L112.0 27.8 L113.0 29.3 L114.0 30.9 L115.0 32.4 L116.0 34.0"/></svg></div>
+            <div class="svc-text">
+              <h3>AI and machine learning advice</h3>
+              <p><span class="k">You bring</span>A product, and a question about whether AI can make it better.</p>
+              <p><span class="k">You get</span>A well-read view of what current AI can and cannot do for it, and a straight answer on where it is worth using.</p>
+            </div>
+          </li>
+        </ul>
+        <a class="btn ghost" href="#contact">Write to me about a project</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 <section id="contact" data-section="contact" aria-labelledby="contact-h">
   <div class="inner">
     <div class="sec-head">
@@ -529,7 +565,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
         </div>
         <div class="slip" aria-live="polite">
           <p class="label" id="slip-face">Between stations</p>
-          <p class="slip-prompt" id="slip-prompt">Anything at all: ideas, or something on the shelf.</p>
+          <p class="slip-prompt" id="slip-prompt">Anything at all: work, ideas, or something on the shelf.</p>
           <dl>
             <div><dt>To</dt><dd><code id="addr">hello@arnavraja.in</code><button class="mini" type="button" data-copy="addr">Copy</button></dd></div>
             <div><dt>Subject</dt><dd><code id="subj">[hello]</code><button class="mini" type="button" data-copy="subj">Copy</button></dd></div>
