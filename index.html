@@ -147,6 +147,13 @@ body { margin: 0; }
   .loc-here { width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; }
 }
 
+/* The whole page: a name, one line, and the three parts of the domain */
+main#top { min-height: calc(100vh - 11rem); min-height: calc(100svh - 11rem); display: flex; flex-direction: column; justify-content: center; }
+.go { display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; margin: 2.25rem 0 0; font-family: var(--mono); font-size: 0.95rem; }
+.go a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 0.15rem; }
+.go a::after { content: ".arnavraja.in"; color: var(--muted); }
+.go a:hover { border-bottom-color: var(--accent); color: var(--accent); }
+
 /* Section scaffolding */
 section { padding-block: clamp(2.5rem, 6vw, 4.5rem); border-top: 1px solid var(--rule); }
 .sec-head { display: grid; grid-template-columns: minmax(0, 13rem) minmax(0, 1fr); gap: 1rem 2.5rem; align-items: baseline; margin-bottom: 2rem; }
@@ -328,7 +335,7 @@ p { margin: 0 0 1rem; max-width: 40rem; }
 .mail .btn { margin-top: 0; }
 .elsewhere { list-style: none; padding: 0; margin: 2rem 0 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; font-family: var(--mono); font-size: 0.88rem; }
 
-footer { border-top: 1px solid var(--rule); padding-block: 2rem 9.5rem; font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
+footer { border-top: 1px solid var(--rule); padding-block: 2rem 2.5rem; font-family: var(--mono); font-size: 0.78rem; color: var(--muted); }
 footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 0.5rem 2rem; }
 
 /* Load moment: the name settles in from a visible state */
@@ -355,7 +362,6 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   .ripen { grid-template-columns: minmax(0, 1fr); gap: 2rem; }
   .svc { grid-template-columns: minmax(0, 1fr); }
   .station { font-size: 0.7rem; max-width: 4.4rem; white-space: normal; }
-  footer { padding-bottom: 6rem; }
   .dial { height: 7.6rem; }
   .sig-pic svg { width: 8rem; }
   .svc-text p { grid-template-columns: minmax(0, 1fr); gap: 0.1rem; }
@@ -365,21 +371,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
 <body>
 
 <canvas id="field" aria-hidden="true"></canvas>
-<nav class="locator" id="locator" aria-label="Where you are on the shelf's axes">
-  <svg viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
-    <line class="axis" x1="50" y1="0" x2="50" y2="100"></line>
-    <line class="axis" x1="0" y1="50" x2="100" y2="50"></line>
-    <polyline class="trail" id="loc-trail" points=""></polyline>
-  </svg>
-  <div class="loc-field">
-    <a class="loc-pt" href="#top" data-area="top" style="--x:50;--y:8"><i></i><span>name</span></a>
-    <a class="loc-pt" href="#shelf" data-area="shelf" style="--x:50;--y:50"><i></i><span>shelf</span></a>
-    <a class="loc-pt" href="#projects" data-area="projects" style="--x:12;--y:28"><i></i><span>projects</span></a>
-    <a class="loc-pt" href="#writing" data-area="writing" style="--x:18;--y:92"><i></i><span>writing</span></a>
-    <a class="loc-pt right" href="#contact" data-area="contact" style="--x:88;--y:72"><i></i><span>contact</span></a>
-  </div>
-  <span class="loc-here" id="loc-here" aria-hidden="true"></span>
-</nav>
+
 
 <div class="wrap">
 
@@ -396,147 +388,9 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     <h1>Arnav<br><span class="hl">Raja</span></h1>
     <!-- EDIT: rewrite this paragraph in your own voice -->
     <p class="lede">I write about the things I keep thinking about.</p>
+    <p class="go"><a href="https://mind.arnavraja.in">mind</a><a href="https://sound.arnavraja.in">sound</a><a href="https://colour.arnavraja.in">colour</a></p>
   </div>
 </div>
-
-<section id="shelf" data-section="shelf" aria-labelledby="shelf-h">
-  <div class="inner">
-    <div class="sec-head">
-      <p class="label">The shelf</p>
-      <h2 id="shelf-h">Ten ideas, read from the bedrock up</h2>
-    </div>
-    <div class="sec-body">
-      <div class="col">
-        <!-- Each layer rests on the ones listed in data-rests. --row is its depth: 0 is the surface, 7 is bedrock. -->
-        <div class="strata" id="strata">
-          <svg class="strata-art" id="strata-art" aria-hidden="true"></svg>
-          <span class="st-edge st-top">Surface</span>
-          <span class="st-edge st-bot">Bedrock</span>
-          <a class="layer" style="--row:0" data-id="play" data-rests="time space mech" data-note="Things done for the joy of them: games, puzzles, toys and detours. It sits at the surface because it is made from everything beneath it." href="https://mind.arnavraja.in/tag/play/"><b>Play</b><span>Fun stuff</span></a>
-          <a class="layer l" style="--row:1" data-id="time" data-rests="matter structure" data-note="Pattern unfolding in time: expectation, tension and release. Sound is physics; harmony is mathematics." href="https://mind.arnavraja.in/tag/music/"><b>Ordered time</b><span>Music</span></a>
-          <a class="layer r" style="--row:1" data-id="space" data-rests="matter structure" data-note="Pattern taken in all at once: where the eye wanders, and what it lingers on. Light is physics; composition is geometry." href="https://mind.arnavraja.in/tag/art/"><b>Ordered space</b><span>Visual art</span></a>
-          <a class="layer" style="--row:2" data-id="power" data-rests="scarcity first" data-note="Who decides for everyone, and why anyone accepts it. It grows out of scarcity and out of first questions about what is fair." href="https://mind.arnavraja.in/tag/politics/"><b>Power and consent</b><span>Politics</span></a>
-          <a class="layer" style="--row:3" data-id="scarcity" data-rests="structure first" data-note="Choosing under limits, and the patterns that millions of choices make without anyone designing them." href="https://mind.arnavraja.in/tag/economy/"><b>Scarcity</b><span>Economics</span></a>
-          <a class="layer" style="--row:4" data-id="mech" data-rests="structure matter" data-note="Thought written precisely enough for a machine to run, and machines that learn rules of their own. Logic, made physical." href="https://mind.arnavraja.in/tag/computing/"><b>Mechanised thought</b><span>Computer science, AI and ML</span></a>
-          <a class="layer" style="--row:5" data-id="matter" data-rests="structure" data-note="What the world is made of, and the rules it cannot break. The point where mathematics touches something real." href="https://mind.arnavraja.in/tag/physics/"><b>Matter and law</b><span>Physics</span></a>
-          <a class="layer" style="--row:6" data-id="structure" data-rests="first" data-note="Patterns that hold necessarily, apart from anything they describe. Everything above uses it." href="https://mind.arnavraja.in/tag/mathematics/"><b>Structure</b><span>Mathematics</span></a>
-          <a class="layer" style="--row:7" data-id="first" data-rests="" data-note="What everything else takes for granted: what is real, what can be known, what matters. Nothing lies beneath it." href="https://mind.arnavraja.in/tag/philosophy/"><b>First questions</b><span>Philosophy</span></a>
-          <a class="core" data-id="connection" data-rests="" data-note="The core drilled through every layer. Each idea is defined by what it touches, and this is where they touch." href="https://mind.arnavraja.in/tag/ideas/"><b>Connection</b><span>Connections</span></a>
-        </div>
-        <div class="mapcap" id="mapcap" aria-live="polite" hidden>
-          <p class="mc-t" id="mct"></p>
-          <p class="mc-d" id="mcd"></p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="projects" data-section="projects" aria-labelledby="projects-h">
-  <div class="inner">
-    <div class="sec-head">
-      <p class="label">Projects</p>
-      <h2 id="projects-h">Three branches of one domain, each split between what I make and what I take in</h2>
-    </div>
-    <div class="sec-body">
-      <div class="col">
-        <!-- EDIT: change "status" to "status live" once a project is up. -->
-        <div class="tree">
-        <span class="trunk" id="trunk" aria-hidden="true"></span>
-        <p class="zroot">arnavraja.in <span>/ projects</span></p>
-        <ul class="zone">
-          <li class="branch">
-            <div class="bhead"><a class="sub" href="https://mind.arnavraja.in">mind<span>.arnavraja.in</span></a><span class="idea">Ordered thought</span><span class="status">In progress</span></div>
-            <div class="balance" aria-hidden="true"><i style="flex:1"></i><i style="flex:1"></i></div>
-            <div class="halves">
-              <div class="half out"><span class="k">Written and built</span><p>Essays and notes filed under the ten ideas, ambitious full-scale software I have built and made public, and the occasional experiment. Latest: <a href="https://mind.arnavraja.in/ashwater/">Ashwater: The Bell Debt</a>, a dark fantasy role-playing game you can play in the browser.</p></div>
-              <div class="half in"><span class="k">Studied</span><p>Papers, books and courses on artificial intelligence, machine learning, mathematics and philosophy of mind, with my notes on each.</p></div>
-            </div>
-          </li>
-          <li class="branch">
-            <div class="bhead"><a class="sub" href="https://sound.arnavraja.in">sound<span>.arnavraja.in</span></a><span class="idea">Ordered time</span><span class="status">In progress</span></div>
-            <div class="balance" aria-hidden="true"><i style="flex:1"></i><i style="flex:2"></i></div>
-            <div class="halves">
-              <div class="half out"><span class="k">Made, less often</span><p>The occasional track, sketch or production note.</p></div>
-              <div class="half in"><span class="k">Heard, most of the time</span><p>Listening logs, album notes and the records I keep going back to. This is most of what lives here.</p></div>
-            </div>
-          </li>
-          <li class="branch">
-            <div class="bhead"><a class="sub" href="https://colour.arnavraja.in">colour<span>.arnavraja.in</span></a><span class="idea">Ordered space</span><span class="status">In progress</span></div>
-            <div class="balance" aria-hidden="true"><i style="flex:2"></i><i style="flex:1"></i></div>
-            <div class="halves">
-              <div class="half out"><span class="k">Made, most of the time</span><p>Paintings and photographs. This is most of what lives here.</p></div>
-              <div class="half in"><span class="k">Seen, less often</span><p>Now and then, notes on an artist, an exhibition or an image I keep returning to.</p></div>
-            </div>
-          </li>
-        </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="writing" data-section="writing" aria-labelledby="writing-h">
-  <div class="inner">
-    <div class="sec-head">
-      <p class="label">Writing</p>
-      <h2 id="writing-h">Ideas, from a point to a plane</h2>
-    </div>
-    <div class="sec-body">
-      <div class="col">
-        <p>Writing on mind.arnavraja.in is sorted by how far an idea has grown, not by date, and filed under the ten ideas on the shelf, from First questions to Play. Every piece starts at Connection.</p>
-        <!-- EDIT: replace these working titles with your published posts. data-subjects uses the names from the map: software ai maths music art ideas philosophy economics politics anthropology -->
-        <div class="ripen">
-          <div class="stage seed">
-            <div class="stage-h"><span class="len">A few lines</span><h3>Points</h3><p>Fragments, questions and things I noticed. No length yet, only position.</p></div>
-          </div>
-          <div class="stage sprout">
-            <div class="stage-h"><span class="len">A few pages</span><h3>Lines</h3><p>Notes that are going somewhere: reading notes and ideas in progress.</p></div>
-          </div>
-          <div class="stage ever">
-            <div class="stage-h"><span class="len">Finished</span><h3>Planes</h3><p>Essays worked through in every direction, which I still stand behind.</p></div>
-          </div>
-        </div>
-        <a class="btn" href="https://mind.arnavraja.in/#writing">Read the writing at mind.arnavraja.in</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="contact" data-section="contact" aria-labelledby="contact-h">
-  <div class="inner">
-    <div class="sec-head">
-      <p class="label">Contact</p>
-      <h2 id="contact-h">Every message has a frequency</h2>
-    </div>
-    <div class="sec-body">
-      <div class="col">
-        <p class="work-intro">Tune the dial to the idea your message belongs to, then copy the subject line so it reaches the right place.</p>
-        <div class="dial" id="dial" role="group" aria-label="Choose what your message is about">
-          <div class="band" aria-hidden="true"></div>
-          <span class="needle" id="needle" aria-hidden="true"></span>
-            <button class="station" type="button" data-face="mind" data-idea="Ordered thought" data-p="17" data-prompt="A reply to something I wrote, a paper I should read, or a question about software, AI, mathematics or philosophy." aria-pressed="false" style="--p:17;--c:var(--s-lab)"><i></i>Ordered thought</button>
-            <button class="station" type="button" data-face="sound" data-idea="Ordered time" data-p="50" data-prompt="Records I should hear, or something you made." aria-pressed="false" style="--p:50;--c:var(--s-sound)"><i></i>Ordered time</button>
-            <button class="station" type="button" data-face="colour" data-idea="Ordered space" data-p="83" data-prompt="Artists, exhibitions, or a response to my work." aria-pressed="false" style="--p:83;--c:var(--s-colour)"><i></i>Ordered space</button>
-        </div>
-        <div class="slip" aria-live="polite">
-          <p class="label" id="slip-face">Between stations</p>
-          <p class="slip-prompt" id="slip-prompt">Anything at all: ideas, or something on the shelf.</p>
-          <dl>
-            <div><dt>To</dt><dd><code id="addr">hello@arnavraja.in</code><button class="mini" type="button" data-copy="addr">Copy</button></dd></div>
-            <div><dt>Subject</dt><dd><code id="subj">[hello]</code><button class="mini" type="button" data-copy="subj">Copy</button></dd></div>
-          </dl>
-        </div>
-        <!-- EDIT: add your real profile links -->
-        <ul class="elsewhere">
-          <li><a href="https://github.com/">GitHub</a></li>
-          <li><a href="https://www.linkedin.com/">LinkedIn</a></li>
-          <li><a href="https://mind.arnavraja.in/#writing">Writing</a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
 
 </main>
 
@@ -550,149 +404,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
 </div>
 
 <script>
-(function () {
-  var y = document.getElementById('yr');
-  if (y) y.textContent = new Date().getFullYear();
-  function copyFrom(btn) {
-    var el = document.getElementById(btn.dataset.copy); if (!el) return;
-    var label = btn.textContent;
-    function selectIt() {
-      var r = document.createRange(); r.selectNodeContents(el);
-      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
-      btn.textContent = 'Selected';
-      setTimeout(function () { btn.textContent = label; }, 1800);
-    }
-    try {
-      navigator.clipboard.writeText(el.textContent.trim()).then(function () {
-        btn.textContent = 'Copied';
-        setTimeout(function () { btn.textContent = label; }, 1800);
-      }, selectIt);
-    } catch (e) { selectIt(); }
-  }
-  document.querySelectorAll('[data-copy]').forEach(function (b) { b.addEventListener('click', function () { copyFrom(b); }); });
-  var dial = document.getElementById('dial');
-  if (dial) {
-    var stations = Array.prototype.slice.call(dial.querySelectorAll('.station'));
-    var faceEl = document.getElementById('slip-face'), promptEl = document.getElementById('slip-prompt'), subj = document.getElementById('subj');
-    var defFace = faceEl.textContent, defPrompt = promptEl.textContent;
-    dial.classList.add('untuned');
-    function needle(p) { dial.style.setProperty('--n', p); }
-    function tune(st) {
-      stations.forEach(function (x) { x.setAttribute('aria-pressed', x === st ? 'true' : 'false'); });
-      dial.classList.toggle('untuned', !st);
-      if (st) {
-        needle(st.dataset.p); faceEl.textContent = st.dataset.idea + ' / ' + st.dataset.face + '.arnavraja.in';
-        promptEl.textContent = st.dataset.prompt; subj.textContent = '[' + st.dataset.face + ']';
-      } else {
-        needle(33.5); faceEl.textContent = defFace; promptEl.textContent = defPrompt; subj.textContent = '[hello]';
-      }
-    }
-    stations.forEach(function (st) {
-      st.addEventListener('click', function (e) { e.stopPropagation(); tune(st.getAttribute('aria-pressed') === 'true' ? null : st); });
-    });
-    function pct(ev) { var r = dial.getBoundingClientRect(); return Math.max(0, Math.min(100, (ev.clientX - r.left) / r.width * 100)); }
-    function nearest(p) { return stations.reduce(function (a, b) { return Math.abs(b.dataset.p - p) < Math.abs(a.dataset.p - p) ? b : a; }); }
-    var dragging = false;
-    dial.addEventListener('pointerdown', function (ev) {
-      if (ev.target.closest('.station')) return;
-      dragging = true; dial.classList.add('dragging'); dial.setPointerCapture(ev.pointerId); needle(pct(ev));
-    });
-    dial.addEventListener('pointermove', function (ev) { if (dragging) needle(pct(ev)); });
-    function release(ev) {
-      if (!dragging) return;
-      dragging = false; dial.classList.remove('dragging'); tune(nearest(pct(ev)));
-    }
-    dial.addEventListener('pointerup', release);
-    dial.addEventListener('pointercancel', function () { dragging = false; dial.classList.remove('dragging'); });
-  }
-})();
-(function () {
-  /* The strata: wavy layers drawn beneath the labels; pointing at a layer shows what it rests on and what rests on it */
-  var box = document.getElementById('strata'), svg = document.getElementById('strata-art');
-  if (!box || !svg) return;
-  var NS = 'http://www.w3.org/2000/svg', ROWS = 8;
-  var items = [].slice.call(box.querySelectorAll('.layer, .core'));
-  var by = {}; items.forEach(function (el) { by[el.dataset.id] = el; });
-  function rests(id) { return (by[id].dataset.rests || '').split(' ').filter(function (x) { return by[x]; }); }
-  function supports(id) { return items.map(function (el) { return el.dataset.id; }).filter(function (k) { return rests(k).indexOf(id) > -1; }); }
-  function css(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
-  function el(tag, a) { var e = document.createElementNS(NS, tag); for (var k in a) e.setAttribute(k, a[k]); return e; }
-  function wave(i, x, W) {
-    if (i === 0 || i === ROWS) return 0;
-    return 4.5 * Math.sin(x / W * Math.PI * (1.3 + i * 0.37) + i * 1.9) + 2.5 * Math.sin(x / W * Math.PI * (4.1 + i * 0.6) + i);
-  }
-  var lit = null;
-  function draw() {
-    var r = box.getBoundingClientRect(), W = r.width, H = r.height, rh = H / ROWS;
-    var coreX = W - parseFloat(getComputedStyle(box).getPropertyValue('--core')) / 100 * W / 2;
-    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.innerHTML = '';
-    var ink = css('--ink'), accent = css('--accent'), rule = css('--rule'), paper = css('--paper'), muted = css('--muted');
-    var litRows = {}, self = lit && by[lit] ? by[lit] : null;
-    if (lit && lit !== 'connection') { [lit].concat(rests(lit), supports(lit)).forEach(function (k) { var row = +getComputedStyle(by[k]).getPropertyValue('--row'); litRows[row] = (litRows[row] || 0) + (k === lit ? 2 : 1); }); }
-    function edge(i) { var pts = []; for (var x = 0; x <= W + 0.1; x += W / 60) pts.push([x, i * rh + wave(i, x, W)]); return pts; }
-    for (var i = 0; i < ROWS; i++) {
-      var top = edge(i), bot = edge(i + 1).reverse();
-      var d = 'M' + top.concat(bot).map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' L') + ' Z';
-      var on = litRows[i];
-      svg.appendChild(el('path', { d: d, fill: on ? accent : ink, 'fill-opacity': on ? (on > 1 ? 0.16 : 0.08) : (0.015 + i * 0.016) }));
-      if (i > 0) svg.appendChild(el('path', { d: 'M' + top.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' L'), fill: 'none', stroke: rule, 'stroke-width': 1 }));
-    }
-    svg.appendChild(el('line', { x1: 0, y1: 0, x2: W, y2: 0, stroke: ink, 'stroke-width': 1 }));
-    svg.appendChild(el('line', { x1: 0, y1: H, x2: W, y2: H, stroke: ink, 'stroke-width': 2 }));
-    /* the core */
-    var coreOn = lit === 'connection';
-    svg.appendChild(el('rect', { x: coreX - 9, y: 0, width: 18, height: H, fill: paper, stroke: coreOn ? accent : ink, 'stroke-width': coreOn ? 1.5 : 1 }));
-    for (var j = 1; j < ROWS; j++) { var yy = j * rh + wave(j, coreX, W); svg.appendChild(el('line', { x1: coreX - 9, y1: yy, x2: coreX + 9, y2: yy, stroke: coreOn ? accent : muted, 'stroke-width': 1 })); }
-    /* what the pointed-at layer rests on (solid, downwards) and what rests on it (dashed, upwards) */
-    if (self && lit !== 'connection') {
-      function endOf(node) { var a = node.querySelector('span').getBoundingClientRect(), b2 = node.querySelector('b').getBoundingClientRect(); return [Math.max(a.right, b2.right) - r.left + 10, b2.top - r.top + b2.height / 2]; }
-      var se = endOf(self), sx = se[0], sy = se[1];
-      var n = 0;
-      function link(k, down) {
-        var te = endOf(by[k]), tx = te[0], ty = te[1];
-        var mx = Math.min(coreX - 22, Math.max(sx, tx) + 30 + (n++) * 14);
-        var p = el('path', { d: 'M' + sx + ' ' + sy + ' C' + mx + ' ' + sy + ' ' + mx + ' ' + ty + ' ' + tx + ' ' + ty, fill: 'none', stroke: down ? accent : muted, 'stroke-width': down ? 1.6 : 1.2, 'stroke-dasharray': down ? '' : '4 4' });
-        svg.appendChild(p);
-        svg.appendChild(el('circle', { cx: tx, cy: ty, r: 3, fill: down ? accent : muted }));
-      }
-      rests(lit).forEach(function (k) { link(k, true); });
-      supports(lit).forEach(function (k) { link(k, false); });
-      svg.appendChild(el('circle', { cx: sx, cy: sy, r: 3.5, fill: accent }));
-    }
-  }
-  var cap = document.getElementById('mapcap'), mct = document.getElementById('mct'), mcd = document.getElementById('mcd');
-  function names(ids) { return ids.map(function (k) { return by[k].querySelector('b').textContent; }).join(', '); }
-  function light(id) {
-    lit = id; box.classList.add('active');
-    var on = id === 'connection' ? items.map(function (e) { return e.dataset.id; }) : [id].concat(rests(id), supports(id));
-    items.forEach(function (e) { e.classList.toggle('lit', on.indexOf(e.dataset.id) > -1); e.classList.toggle('self', e.dataset.id === id); });
-    var n = by[id];
-    mct.textContent = n.querySelector('b').textContent;
-    var tag = document.createElement('span'); tag.className = 'mc-s'; tag.textContent = n.querySelector('span').textContent; mct.appendChild(tag);
-    var r = rests(id), s = supports(id), txt = n.dataset.note;
-    if (id !== 'connection') { txt += ' Rests on ' + (r.length ? names(r) : 'nothing') + '.'; if (s.length) txt += ' Holds up ' + names(s) + '.'; }
-    mcd.textContent = txt + ' ';
-    var a = document.createElement('a'); a.href = n.href; a.textContent = 'Read about it'; mcd.appendChild(a);
-    cap.hidden = false; draw();
-  }
-  function clear() { lit = null; box.classList.remove('active'); items.forEach(function (e) { e.classList.remove('lit', 'self'); }); cap.hidden = true; draw(); }
-  var touch = false;
-  items.forEach(function (e) {
-    var id = e.dataset.id;
-    e.addEventListener('pointerdown', function (ev) { touch = ev.pointerType !== 'mouse'; });
-    e.addEventListener('pointerenter', function (ev) { if (ev.pointerType === 'mouse') light(id); });
-    e.addEventListener('focus', function () { if (!touch) light(id); });
-    e.addEventListener('click', function (ev) { if (touch && lit !== id) { ev.preventDefault(); light(id); } });
-  });
-  box.addEventListener('pointerleave', function (ev) { if (ev.pointerType === 'mouse') clear(); });
-  document.addEventListener('pointerdown', function (ev) { if (lit && !box.contains(ev.target)) clear(); });
-  box.addEventListener('focusout', function (ev) { if (ev.relatedTarget && !box.contains(ev.relatedTarget)) clear(); });
-  if (window.ResizeObserver) new ResizeObserver(function () { draw(); }).observe(box); else window.addEventListener('resize', draw);
-  if (window.matchMedia) { var mq = matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', draw); }
-  new MutationObserver(function () { setTimeout(draw, 750); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-zone', 'data-theme'] });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
-  draw();
-})();
+document.getElementById("yr").textContent = new Date().getFullYear();
 </script>
 <script>
 /* The field, the resolving name and the locator */
@@ -798,49 +510,8 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     }
   })();
 
-  /* 3 and 4. Where you are, and the colour of the part you are in */
-  var areas = [].slice.call(document.querySelectorAll('[data-section]'));
-  var locPts = {}, links = {};
-  [].slice.call(document.querySelectorAll('.loc-pt')).forEach(function (a) {
-    locPts[a.dataset.area] = [parseFloat(a.style.getPropertyValue('--x')), parseFloat(a.style.getPropertyValue('--y'))];
-    links[a.dataset.area] = a;
-  });
-  var here = document.getElementById('loc-here'), trail = document.getElementById('loc-trail'), path = [];
-  function go(area) {
-    if (!locPts[area] || root.dataset.zone === area) return;
-    root.dataset.zone = area;
-    here.style.setProperty('--hx', locPts[area][0] / 100); here.style.setProperty('--hy', locPts[area][1] / 100);
-    Object.keys(links).forEach(function (k) { links[k].setAttribute('aria-current', k === area ? 'true' : 'false'); });
-    path.push(locPts[area].join(',')); if (path.length > 7) path.shift();
-    trail.setAttribute('points', path.join(' '));
-  }
-  go('top');
-  if (window.IntersectionObserver) {
-    var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) go(e.target.dataset.section); });
-    }, { rootMargin: '-48% 0px -48% 0px' });
-    areas.forEach(function (a) { io.observe(a); });
-  }
 })();
 </script>
-<script>
-/* One continuous trunk: from the centre of the root dot to the last branch's tick */
-(function () {
-  var tree = document.querySelector('.tree'), trunk = document.getElementById('trunk');
-  if (!tree || !trunk) return;
-  function place() {
-    var root = tree.querySelector('.zroot'), branches = tree.querySelectorAll('.branch');
-    if (!root || !branches.length) return;
-    var tr = tree.getBoundingClientRect(), dot = getComputedStyle(root, '::before');
-    var top = root.getBoundingClientRect().top - tr.top + parseFloat(dot.top) + parseFloat(dot.height) / 2;
-    var last = branches[branches.length - 1], tick = getComputedStyle(last, '::before');
-    var bottom = last.getBoundingClientRect().top - tr.top + parseFloat(tick.top) + 1;
-    trunk.style.top = top + 'px'; trunk.style.bottom = 'auto'; trunk.style.height = Math.max(0, bottom - top) + 'px';
-  }
-  place();
-  if (window.ResizeObserver) new ResizeObserver(place).observe(tree); else window.addEventListener('resize', place);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
-})();
-</script>
+
 </body>
 </html>
