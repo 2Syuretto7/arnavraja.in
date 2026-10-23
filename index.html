@@ -148,7 +148,7 @@ body { margin: 0; }
 }
 
 /* The whole page: a name, one line, and the three parts of the domain */
-main#top { min-height: calc(100vh - 11rem); min-height: calc(100svh - 11rem); display: flex; flex-direction: column; justify-content: center; }
+main#top { min-height: calc(100vh - 6rem); min-height: calc(100svh - 6rem); display: flex; flex-direction: column; justify-content: center; }
 .go { display: flex; flex-wrap: wrap; gap: 0.5rem 1.75rem; margin: 2.25rem 0 0; font-family: var(--mono); font-size: 0.95rem; }
 .go a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--rule); padding-bottom: 0.15rem; }
 .go a::after { content: ".arnavraja.in"; color: var(--muted); }
@@ -394,18 +394,10 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
 
 </main>
 
-<footer>
-  <div class="inner">
-    <span>&copy; <span id="yr">2026</span> Arnav Raja</span>
-    <span>arnavraja.in</span>
-  </div>
-</footer>
 
 </div>
 
-<script>
-document.getElementById("yr").textContent = new Date().getFullYear();
-</script>
+
 <script>
 /* The field, the resolving name and the locator */
 (function () {
