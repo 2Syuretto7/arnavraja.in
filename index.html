@@ -156,40 +156,32 @@ h2 { font-family: var(--display); font-weight: 600; font-size: clamp(1.6rem, 3.6
 .sec-body > .col { grid-column: 2; min-width: 0; }
 p { margin: 0 0 1rem; max-width: 40rem; }
 
-/* The map: ten subjects on two axes (making to understanding, abstract to human) */
-.map {
-  position: relative; width: 100%; aspect-ratio: 16 / 10; min-height: 24rem;
-  border-top: 1px solid var(--ink); border-bottom: 1px solid var(--rule);
+/* The shelf as strata: ten ideas as layers of rock, read from the bedrock up.
+   Each layer rests on the ones beneath it; Connections is the core drilled through all of them. */
+.strata { --rh: 3.7rem; --core: 15%; position: relative; height: calc(8 * var(--rh)); margin-block: 2rem 1.9rem; }
+.strata-art { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.st-edge { position: absolute; left: 0; font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted); }
+.st-top { top: -1.55rem; }
+.st-bot { bottom: -1.55rem; }
+.layer {
+  position: absolute; left: 0; right: var(--core); top: calc(var(--row) * var(--rh)); height: var(--rh);
+  display: flex; align-items: center; flex-wrap: wrap; align-content: center; gap: 0.1rem 0.9rem;
+  padding: 0 1rem; color: var(--ink); text-decoration: none; z-index: 1; transition: opacity 180ms ease;
 }
-.map::before, .map::after { content: ""; position: absolute; pointer-events: none; }
-.map::before { left: 50%; top: 2.2rem; bottom: 2.2rem; border-left: 1px dashed var(--rule); }
-.map::after { top: 50%; left: 1.8rem; right: 1.8rem; border-top: 1px dashed var(--rule); }
-.map svg.edges { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; overflow: visible; }
-.edges line { stroke: var(--muted); stroke-opacity: 0.45; stroke-width: 1; transition: stroke 160ms ease, stroke-opacity 160ms ease, stroke-width 160ms ease; }
-.edges line.faint { stroke-dasharray: 2 5; stroke-opacity: 0.35; }
-.map.active .edges line { stroke-opacity: 0.12; }
-.map.active .edges line.on { stroke: var(--accent); stroke-opacity: 1; stroke-width: 1.75; }
-.ax { position: absolute; font-family: var(--mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted); white-space: nowrap; }
-.ax-t { top: 0.6rem; left: 50%; transform: translateX(-50%); }
-.ax-b { bottom: 0.6rem; left: 50%; transform: translateX(-50%); }
-.ax-l { left: 0.1rem; top: 50%; writing-mode: vertical-rl; transform: translateY(-50%) rotate(180deg); }
-.ax-r { right: 0.1rem; top: 50%; writing-mode: vertical-rl; transform: translateY(-50%); }
-.node {
-  position: absolute; left: calc(var(--x) * 1%); top: calc(var(--y) * 1%); transform: translate(-50%, -0.35rem);
-  display: flex; flex-direction: column; align-items: center; gap: 0.3rem;
-  color: var(--ink); text-decoration: none; z-index: 1; transition: opacity 160ms ease;
-}
-.node .dot { width: 0.7rem; height: 0.7rem; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); transition: transform 160ms ease, background-color 160ms ease, border-color 160ms ease; }
-.node .nm { font-family: var(--display); font-weight: 600; font-size: 1rem; letter-spacing: -0.01em; white-space: nowrap; background: var(--paper); padding: 0 0.3rem; line-height: 1.2; }
-.node.hub .dot { width: 0.95rem; height: 0.95rem; background: var(--mark); border-color: var(--mark); }
-.node.hub { transform: translate(-50%, calc(-0.95rem / 2)); }
-.node.hub .nm { font-style: italic; }
-.map.active .node { opacity: 0.3; }
-.map.active .node.lit { opacity: 1; }
-.map.active .node.self .dot { background: var(--accent); border-color: var(--accent); transform: scale(1.35); }
-.node:hover { text-decoration: none; }
-.node:focus-visible { outline: none; }
-.node:focus-visible .nm { outline: 2px solid var(--accent); outline-offset: 2px; }
+.layer.l { right: calc(50% + var(--core) / 2); }
+.layer.r { left: calc(50% - var(--core) / 2); }
+.layer b { font-family: var(--display); font-weight: 600; font-size: 1.12rem; letter-spacing: -0.01em; line-height: 1.15; }
+.layer span { font-family: var(--mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+.layer:hover { text-decoration: none; }
+.layer:focus-visible, .core:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.strata.active .layer, .strata.active .core { opacity: 0.32; }
+.strata.active .lit { opacity: 1; }
+.strata .self b { color: var(--accent); }
+.core { position: absolute; top: 0; bottom: 0; right: calc(var(--core) / 2 - 1.1rem); width: 2.2rem; z-index: 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 0.6rem; text-decoration: none; color: var(--ink); transition: opacity 180ms ease; }
+.core b { writing-mode: vertical-rl; font-family: var(--display); font-weight: 600; font-size: 1rem; letter-spacing: 0.02em; background: var(--paper); padding: 0.4rem 0.1rem; }
+.core span { writing-mode: vertical-rl; font-family: var(--mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-top: 0.5rem; background: var(--paper); padding: 0.2rem 0; }
+.core.self b { color: var(--accent); }
+
 .mapcap { display: grid; grid-template-columns: minmax(0, 12rem) minmax(0, 1fr); gap: 0.5rem 2rem; padding-top: 1.1rem; min-height: 5.5rem; }
 .mapcap .mc-t { font-family: var(--display); font-weight: 600; font-size: 1.15rem; margin: 0; }
 .mapcap .mc-s { display: block; font-family: var(--mono); font-weight: 400; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-top: 0.3rem; }
@@ -349,9 +341,11 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
 @media (max-width: 720px) {
   .sec-head, .sec-body { grid-template-columns: minmax(0, 1fr); }
   .sec-body > .col { grid-column: 1; }
-  .map { aspect-ratio: 4 / 5; min-height: 30rem; }
-  .node { left: calc(var(--mx) * 1%); top: calc(var(--my) * 1%); }
-  .node .nm { font-size: 0.86rem; white-space: normal; max-width: 6.2rem; text-align: center; line-height: 1.1; }
+  .strata { --rh: 3.9rem; --core: 13%; }
+  .layer { padding: 0 0.6rem; }
+  .layer b { font-size: 0.98rem; }
+  .layer span { font-size: 0.6rem; letter-spacing: 0.06em; }
+  .layer.l, .layer.r { padding-right: 0.3rem; }
   .mapcap { grid-template-columns: minmax(0, 1fr); }
   .halves { grid-template-columns: minmax(0, 1fr); }
   .tree { --tick: 1rem; --gapx: 0.45rem; }
@@ -409,27 +403,25 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   <div class="inner">
     <div class="sec-head">
       <p class="label">The shelf</p>
-      <h2 id="shelf-h">Ten ideas, and the relations between them</h2>
+      <h2 id="shelf-h">Ten ideas, read from the bedrock up</h2>
     </div>
     <div class="sec-body">
       <div class="col">
-        <!-- Each subject sits on two axes. --x/--y place it on wide screens, --mx/--my on phones (0 to 100). data-links names the subjects it connects to. -->
-        <div class="map" id="map">
-          <svg class="edges" id="edges" aria-hidden="true"></svg>
-          <span class="ax ax-t">Making</span>
-          <span class="ax ax-b">Understanding</span>
-          <span class="ax ax-l">Abstract</span>
-          <span class="ax ax-r">Human</span>
-          <a class="node" id="n-software" style="--x:20;--y:20;--mx:24;--my:10" data-links="ai maths" data-note="Building things that run. The place where an idea is tested by whether it works." data-subject="Software" aria-label="Executable thought (software)" href="https://mind.arnavraja.in/tag/software"><span class="dot"></span><span class="nm">Executable thought</span></a>
-          <a class="node" id="n-ai" style="--x:40;--y:64;--mx:22;--my:58" data-links="software maths philosophy" data-note="Mostly studied, rarely built. Machines that learn, sitting between code, mathematics and old questions about minds. It sits low on the map because I read far more of it than I make." data-subject="AI and machine learning" aria-label="Mind as mechanism (ai and machine learning)" href="https://mind.arnavraja.in/tag/ai"><span class="dot"></span><span class="nm">Mind as mechanism</span></a>
-          <a class="node" id="n-maths" style="--x:12;--y:72;--mx:20;--my:72" data-links="software ai music philosophy economics" data-note="Studied for its own sake rather than produced. The language underneath code, harmony, markets and argument." data-subject="Mathematics" aria-label="Structure (mathematics)" href="https://mind.arnavraja.in/tag/mathematics"><span class="dot"></span><span class="nm">Structure</span></a>
-          <a class="node" id="n-music" style="--x:70;--y:38;--mx:80;--my:36" data-links="maths art anthropology" data-note="Mostly listening, with some making. Pattern you can hear. It sits lower on the map because I take in more of it than I make." data-subject="Music" aria-label="Ordered time (music)" href="https://mind.arnavraja.in/tag/music"><span class="dot"></span><span class="nm">Ordered time</span></a>
-          <a class="node" id="n-art" style="--x:80;--y:14;--mx:72;--my:9" data-links="music anthropology philosophy" data-note="Mostly making, with some looking. Pattern you can see. It sits high on the map because I make more of it than I take in." data-subject="Visual art" aria-label="Ordered space (visual art)" href="https://mind.arnavraja.in/tag/art"><span class="dot"></span><span class="nm">Ordered space</span></a>
-          <a class="node hub" id="n-ideas" style="--x:50;--y:50;--mx:50;--my:50" data-links="software ai maths music art philosophy politics economics anthropology" data-note="Personal essays and everything else. The one point that touches all the others." data-subject="Ideas" aria-label="Connection (ideas)" href="https://mind.arnavraja.in/tag/ideas"><span class="dot"></span><span class="nm">Connection</span></a>
-          <a class="node" id="n-philosophy" style="--x:30;--y:88;--mx:32;--my:84" data-links="maths ai art politics" data-note="Read and studied rather than written. Mind, ethics and meaning, the questions behind everything else here." data-subject="Philosophy" aria-label="First questions (philosophy)" href="https://mind.arnavraja.in/tag/philosophy"><span class="dot"></span><span class="nm">First questions</span></a>
-          <a class="node" id="n-economics" style="--x:62;--y:80;--mx:58;--my:78" data-links="maths politics anthropology" data-note="Markets, development and the Indian economy. Mathematics applied to how people choose." data-subject="Economics" aria-label="Scarcity (economics)" href="https://mind.arnavraja.in/tag/economy"><span class="dot"></span><span class="nm">Scarcity</span></a>
-          <a class="node" id="n-politics" style="--x:84;--y:64;--mx:72;--my:64" data-links="philosophy economics anthropology" data-note="Institutions, policy and power. Philosophy meeting the real world." data-subject="Politics" aria-label="Power and consent (politics)" href="https://mind.arnavraja.in/tag/politics"><span class="dot"></span><span class="nm">Power and consent</span></a>
-          <a class="node" id="n-anthropology" style="--x:86;--y:84;--mx:74;--my:86" data-links="music art politics economics" data-note="Culture, people and how societies work. Where music and art come from." data-subject="Anthropology" aria-label="Shared meaning (anthropology)" href="https://mind.arnavraja.in/tag/anthropology"><span class="dot"></span><span class="nm">Shared meaning</span></a>
+        <!-- Each layer rests on the ones listed in data-rests. --row is its depth: 0 is the surface, 7 is bedrock. -->
+        <div class="strata" id="strata">
+          <svg class="strata-art" id="strata-art" aria-hidden="true"></svg>
+          <span class="st-edge st-top">Surface</span>
+          <span class="st-edge st-bot">Bedrock</span>
+          <a class="layer" style="--row:0" data-id="play" data-rests="time space mech" data-note="Things done for the joy of them: games, puzzles, toys and detours. It sits at the surface because it is made from everything beneath it." href="https://mind.arnavraja.in/tag/play/"><b>Play</b><span>Fun stuff</span></a>
+          <a class="layer l" style="--row:1" data-id="time" data-rests="matter structure" data-note="Pattern unfolding in time: expectation, tension and release. Sound is physics; harmony is mathematics." href="https://mind.arnavraja.in/tag/music/"><b>Ordered time</b><span>Music</span></a>
+          <a class="layer r" style="--row:1" data-id="space" data-rests="matter structure" data-note="Pattern taken in all at once: where the eye wanders, and what it lingers on. Light is physics; composition is geometry." href="https://mind.arnavraja.in/tag/art/"><b>Ordered space</b><span>Visual art</span></a>
+          <a class="layer" style="--row:2" data-id="power" data-rests="scarcity first" data-note="Who decides for everyone, and why anyone accepts it. It grows out of scarcity and out of first questions about what is fair." href="https://mind.arnavraja.in/tag/politics/"><b>Power and consent</b><span>Politics</span></a>
+          <a class="layer" style="--row:3" data-id="scarcity" data-rests="structure first" data-note="Choosing under limits, and the patterns that millions of choices make without anyone designing them." href="https://mind.arnavraja.in/tag/economy/"><b>Scarcity</b><span>Economics</span></a>
+          <a class="layer" style="--row:4" data-id="mech" data-rests="structure matter" data-note="Thought written precisely enough for a machine to run, and machines that learn rules of their own. Logic, made physical." href="https://mind.arnavraja.in/tag/computing/"><b>Mechanised thought</b><span>Computer science, AI and ML</span></a>
+          <a class="layer" style="--row:5" data-id="matter" data-rests="structure" data-note="What the world is made of, and the rules it cannot break. The point where mathematics touches something real." href="https://mind.arnavraja.in/tag/physics/"><b>Matter and law</b><span>Physics</span></a>
+          <a class="layer" style="--row:6" data-id="structure" data-rests="first" data-note="Patterns that hold necessarily, apart from anything they describe. Everything above uses it." href="https://mind.arnavraja.in/tag/mathematics/"><b>Structure</b><span>Mathematics</span></a>
+          <a class="layer" style="--row:7" data-id="first" data-rests="" data-note="What everything else takes for granted: what is real, what can be known, what matters. Nothing lies beneath it." href="https://mind.arnavraja.in/tag/philosophy/"><b>First questions</b><span>Philosophy</span></a>
+          <a class="core" data-id="connection" data-rests="" data-note="The core drilled through every layer. Each idea is defined by what it touches, and this is where they touch." href="https://mind.arnavraja.in/tag/ideas/"><b>Connection</b><span>Connections</span></a>
         </div>
         <div class="mapcap" id="mapcap" aria-live="polite" hidden>
           <p class="mc-t" id="mct"></p>
@@ -492,7 +484,7 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
     </div>
     <div class="sec-body">
       <div class="col">
-        <p>Writing on mind.arnavraja.in is sorted by how far an idea has grown, not by date, and filed under the ten ideas on the shelf, from Executable thought to Shared meaning. Every piece starts at Connection.</p>
+        <p>Writing on mind.arnavraja.in is sorted by how far an idea has grown, not by date, and filed under the ten ideas on the shelf, from First questions to Play. Every piece starts at Connection.</p>
         <!-- EDIT: replace these working titles with your published posts. data-subjects uses the names from the map: software ai maths music art ideas philosophy economics politics anthropology -->
         <div class="ripen">
           <div class="stage seed">
@@ -615,96 +607,91 @@ footer .inner { display: flex; flex-wrap: wrap; justify-content: space-between; 
   }
 })();
 (function () {
-  var map = document.getElementById('map'), svg = document.getElementById('edges');
-  if (!map || !svg) return;
-  var nodes = {}, list = map.querySelectorAll('.node');
-  list.forEach(function (n) { nodes[n.id.slice(2)] = n; });
-  var pairs = [], seen = {};
-  list.forEach(function (n) {
-    var a = n.id.slice(2);
-    (n.dataset.links || '').split(' ').forEach(function (b) {
-      if (!b || !nodes[b]) return;
-      var k = [a, b].sort().join('|'); if (seen[k]) return; seen[k] = 1;
-      pairs.push([a, b]);
-    });
-  });
-  var NS = 'http://www.w3.org/2000/svg', lines = [];
-  pairs.forEach(function (p) {
-    var l = document.createElementNS(NS, 'line');
-    if (p[0] === 'ideas' || p[1] === 'ideas') l.setAttribute('class', 'faint');
-    svg.appendChild(l); lines.push({ el: l, a: p[0], b: p[1] });
-  });
-  function centre(n) {
-    var d = n.querySelector('.dot').getBoundingClientRect(), m = map.getBoundingClientRect();
-    return [d.left + d.width / 2 - m.left, d.top + d.height / 2 - m.top];
+  /* The strata: wavy layers drawn beneath the labels; pointing at a layer shows what it rests on and what rests on it */
+  var box = document.getElementById('strata'), svg = document.getElementById('strata-art');
+  if (!box || !svg) return;
+  var NS = 'http://www.w3.org/2000/svg', ROWS = 8;
+  var items = [].slice.call(box.querySelectorAll('.layer, .core'));
+  var by = {}; items.forEach(function (el) { by[el.dataset.id] = el; });
+  function rests(id) { return (by[id].dataset.rests || '').split(' ').filter(function (x) { return by[x]; }); }
+  function supports(id) { return items.map(function (el) { return el.dataset.id; }).filter(function (k) { return rests(k).indexOf(id) > -1; }); }
+  function css(n) { return getComputedStyle(document.documentElement).getPropertyValue(n).trim(); }
+  function el(tag, a) { var e = document.createElementNS(NS, tag); for (var k in a) e.setAttribute(k, a[k]); return e; }
+  function wave(i, x, W) {
+    if (i === 0 || i === ROWS) return 0;
+    return 4.5 * Math.sin(x / W * Math.PI * (1.3 + i * 0.37) + i * 1.9) + 2.5 * Math.sin(x / W * Math.PI * (4.1 + i * 0.6) + i);
   }
+  var lit = null;
   function draw() {
-    var m = map.getBoundingClientRect();
-    svg.setAttribute('viewBox', '0 0 ' + m.width + ' ' + m.height);
-    lines.forEach(function (o) {
-      var p = centre(nodes[o.a]), q = centre(nodes[o.b]);
-      o.el.setAttribute('x1', p[0]); o.el.setAttribute('y1', p[1]);
-      o.el.setAttribute('x2', q[0]); o.el.setAttribute('y2', q[1]);
-    });
-  }
-  draw();
-  if (window.ResizeObserver) new ResizeObserver(draw).observe(map); else window.addEventListener('resize', draw);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
-  var mct = document.getElementById('mct'), mcd = document.getElementById('mcd');
-  var defT = mct.textContent, defD = mcd.textContent, current = null;
-  function names(ids) { return ids.map(function (i) { return nodes[i].querySelector('.nm').textContent; }); }
-  function light(id) {
-    current = id; var n = nodes[id], links = (n.dataset.links || '').split(' ').filter(function (x) { return nodes[x]; });
-    map.classList.add('active');
-    list.forEach(function (x) { var k = x.id.slice(2); x.classList.toggle('lit', k === id || links.indexOf(k) > -1); x.classList.toggle('self', k === id); });
-    lines.forEach(function (o) { o.el.classList.toggle('on', o.a === id || o.b === id); });
-    document.getElementById('mapcap').hidden = false;
-    mct.textContent = n.querySelector('.nm').textContent;
-    var tag = document.createElement('span'); tag.className = 'mc-s'; tag.textContent = n.dataset.subject; mct.appendChild(tag);
-    mcd.textContent = n.dataset.note + ' Touches ' + names(links).join(', ') + '. ';
-    var a = document.createElement('a'); a.href = n.href; a.textContent = 'Read on the blog'; mcd.appendChild(a);
-  }
-  function clear() {
-    current = null; map.classList.remove('active');
-    list.forEach(function (x) { x.classList.remove('lit', 'self'); });
-    lines.forEach(function (o) { o.el.classList.remove('on'); });
-    document.getElementById('mapcap').hidden = true;
-  }
-  var touch = false;
-  list.forEach(function (n) {
-    var id = n.id.slice(2);
-    n.addEventListener('pointerdown', function (e) { touch = e.pointerType !== 'mouse'; });
-    n.addEventListener('mouseenter', function () { light(id); });
-    n.addEventListener('focus', function () { light(id); });
-    n.addEventListener('click', function (e) { if (touch && current !== id) { e.preventDefault(); light(id); } });
-  });
-  map.addEventListener('mouseleave', clear);
-  map.addEventListener('focusout', function (e) { if (!map.contains(e.relatedTarget)) clear(); });
-})();
-(function () {
-  var NS = 'http://www.w3.org/2000/svg', W = 72, H = 45, pad = 4;
-  var pos = {};
-  document.querySelectorAll('#map .node').forEach(function (n) {
-    pos[n.id.slice(2)] = [parseFloat(n.style.getPropertyValue('--x')), parseFloat(n.style.getPropertyValue('--y'))];
-  });
-  function el(tag, attrs) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); return e; }
-  function xy(p) { return [pad + p[0] / 100 * (W - 2 * pad), pad + p[1] / 100 * (H - 2 * pad)]; }
-  document.querySelectorAll('.piece').forEach(function (a) {
-    var svg = a.querySelector('svg'); if (!svg) return;
-    var on = (a.dataset.subjects || '').split(' ').filter(function (s) { return pos[s]; });
-    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
-    svg.appendChild(el('rect', { class: 'frame', x: 0.5, y: 0.5, width: W - 1, height: H - 1 }));
-    svg.appendChild(el('line', { class: 'cross', x1: W / 2, y1: 2, x2: W / 2, y2: H - 2 }));
-    svg.appendChild(el('line', { class: 'cross', x1: 2, y1: H / 2, x2: W - 2, y2: H / 2 }));
-    for (var i = 0; i < on.length; i++) for (var j = i + 1; j < on.length; j++) {
-      var p = xy(pos[on[i]]), q = xy(pos[on[j]]);
-      svg.appendChild(el('line', { class: 'ln', x1: p[0], y1: p[1], x2: q[0], y2: q[1] }));
+    var r = box.getBoundingClientRect(), W = r.width, H = r.height, rh = H / ROWS;
+    var coreX = W - parseFloat(getComputedStyle(box).getPropertyValue('--core')) / 100 * W / 2;
+    svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H); svg.innerHTML = '';
+    var ink = css('--ink'), accent = css('--accent'), rule = css('--rule'), paper = css('--paper'), muted = css('--muted');
+    var litRows = {}, self = lit && by[lit] ? by[lit] : null;
+    if (lit && lit !== 'connection') { [lit].concat(rests(lit), supports(lit)).forEach(function (k) { var row = +getComputedStyle(by[k]).getPropertyValue('--row'); litRows[row] = (litRows[row] || 0) + (k === lit ? 2 : 1); }); }
+    function edge(i) { var pts = []; for (var x = 0; x <= W + 0.1; x += W / 60) pts.push([x, i * rh + wave(i, x, W)]); return pts; }
+    for (var i = 0; i < ROWS; i++) {
+      var top = edge(i), bot = edge(i + 1).reverse();
+      var d = 'M' + top.concat(bot).map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' L') + ' Z';
+      var on = litRows[i];
+      svg.appendChild(el('path', { d: d, fill: on ? accent : ink, 'fill-opacity': on ? (on > 1 ? 0.16 : 0.08) : (0.015 + i * 0.016) }));
+      if (i > 0) svg.appendChild(el('path', { d: 'M' + top.map(function (p) { return p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' L'), fill: 'none', stroke: rule, 'stroke-width': 1 }));
     }
-    Object.keys(pos).forEach(function (k) {
-      var c = xy(pos[k]), lit = on.indexOf(k) > -1;
-      svg.appendChild(el('circle', { class: lit ? 'd on' : 'd', cx: c[0], cy: c[1], r: lit ? 2.6 : 1.6 }));
-    });
+    svg.appendChild(el('line', { x1: 0, y1: 0, x2: W, y2: 0, stroke: ink, 'stroke-width': 1 }));
+    svg.appendChild(el('line', { x1: 0, y1: H, x2: W, y2: H, stroke: ink, 'stroke-width': 2 }));
+    /* the core */
+    var coreOn = lit === 'connection';
+    svg.appendChild(el('rect', { x: coreX - 9, y: 0, width: 18, height: H, fill: paper, stroke: coreOn ? accent : ink, 'stroke-width': coreOn ? 1.5 : 1 }));
+    for (var j = 1; j < ROWS; j++) { var yy = j * rh + wave(j, coreX, W); svg.appendChild(el('line', { x1: coreX - 9, y1: yy, x2: coreX + 9, y2: yy, stroke: coreOn ? accent : muted, 'stroke-width': 1 })); }
+    /* what the pointed-at layer rests on (solid, downwards) and what rests on it (dashed, upwards) */
+    if (self && lit !== 'connection') {
+      function endOf(node) { var a = node.querySelector('span').getBoundingClientRect(), b2 = node.querySelector('b').getBoundingClientRect(); return [Math.max(a.right, b2.right) - r.left + 10, b2.top - r.top + b2.height / 2]; }
+      var se = endOf(self), sx = se[0], sy = se[1];
+      var n = 0;
+      function link(k, down) {
+        var te = endOf(by[k]), tx = te[0], ty = te[1];
+        var mx = Math.min(coreX - 22, Math.max(sx, tx) + 30 + (n++) * 14);
+        var p = el('path', { d: 'M' + sx + ' ' + sy + ' C' + mx + ' ' + sy + ' ' + mx + ' ' + ty + ' ' + tx + ' ' + ty, fill: 'none', stroke: down ? accent : muted, 'stroke-width': down ? 1.6 : 1.2, 'stroke-dasharray': down ? '' : '4 4' });
+        svg.appendChild(p);
+        svg.appendChild(el('circle', { cx: tx, cy: ty, r: 3, fill: down ? accent : muted }));
+      }
+      rests(lit).forEach(function (k) { link(k, true); });
+      supports(lit).forEach(function (k) { link(k, false); });
+      svg.appendChild(el('circle', { cx: sx, cy: sy, r: 3.5, fill: accent }));
+    }
+  }
+  var cap = document.getElementById('mapcap'), mct = document.getElementById('mct'), mcd = document.getElementById('mcd');
+  function names(ids) { return ids.map(function (k) { return by[k].querySelector('b').textContent; }).join(', '); }
+  function light(id) {
+    lit = id; box.classList.add('active');
+    var on = id === 'connection' ? items.map(function (e) { return e.dataset.id; }) : [id].concat(rests(id), supports(id));
+    items.forEach(function (e) { e.classList.toggle('lit', on.indexOf(e.dataset.id) > -1); e.classList.toggle('self', e.dataset.id === id); });
+    var n = by[id];
+    mct.textContent = n.querySelector('b').textContent;
+    var tag = document.createElement('span'); tag.className = 'mc-s'; tag.textContent = n.querySelector('span').textContent; mct.appendChild(tag);
+    var r = rests(id), s = supports(id), txt = n.dataset.note;
+    if (id !== 'connection') { txt += ' Rests on ' + (r.length ? names(r) : 'nothing') + '.'; if (s.length) txt += ' Holds up ' + names(s) + '.'; }
+    mcd.textContent = txt + ' ';
+    var a = document.createElement('a'); a.href = n.href; a.textContent = 'Read about it'; mcd.appendChild(a);
+    cap.hidden = false; draw();
+  }
+  function clear() { lit = null; box.classList.remove('active'); items.forEach(function (e) { e.classList.remove('lit', 'self'); }); cap.hidden = true; draw(); }
+  var touch = false;
+  items.forEach(function (e) {
+    var id = e.dataset.id;
+    e.addEventListener('pointerdown', function (ev) { touch = ev.pointerType !== 'mouse'; });
+    e.addEventListener('pointerenter', function (ev) { if (ev.pointerType === 'mouse') light(id); });
+    e.addEventListener('focus', function () { if (!touch) light(id); });
+    e.addEventListener('click', function (ev) { if (touch && lit !== id) { ev.preventDefault(); light(id); } });
   });
+  box.addEventListener('pointerleave', function (ev) { if (ev.pointerType === 'mouse') clear(); });
+  document.addEventListener('pointerdown', function (ev) { if (lit && !box.contains(ev.target)) clear(); });
+  box.addEventListener('focusout', function (ev) { if (ev.relatedTarget && !box.contains(ev.relatedTarget)) clear(); });
+  if (window.ResizeObserver) new ResizeObserver(function () { draw(); }).observe(box); else window.addEventListener('resize', draw);
+  if (window.matchMedia) { var mq = matchMedia('(prefers-color-scheme: dark)'); if (mq.addEventListener) mq.addEventListener('change', draw); }
+  new MutationObserver(function () { setTimeout(draw, 750); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-zone', 'data-theme'] });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw);
+  draw();
 })();
 </script>
 <script>
