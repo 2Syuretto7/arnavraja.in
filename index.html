@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>arnav raja</title>
+<meta name="description" content="A name that will not hold still.">
+<meta name="theme-color" content="#1d34e0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231d34e0'/%3E%3Cpath d='M6 24 L16 6 L26 24' stroke='%23f2efff' stroke-width='3' fill='none'/%3E%3Ccircle cx='16' cy='20' r='2.6' fill='%23ffd23f'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cobalt: #1d34e0;
+    --cobalt-deep: #10209a;
+    --paper: #f2efff;
+    --sun: #ffd23f;
+    --haze: rgba(242, 239, 255, 0.62);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--cobalt);
+    color: var(--paper);
+    font-family: "Syne", system-ui, sans-serif;
+    overflow: hidden;
+    cursor: crosshair;
+  }
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+  .veil {
+    position: fixed; inset: 0;
+    display: grid;
+    grid-template-rows: 1fr auto;
+    padding: clamp(16px, 4vw, 48px);
+    pointer-events: none;
+  }
+  .dictum {
+    align-self: start;
+    max-width: 22ch;
+    font-weight: 500;
+    font-size: clamp(15px, 1.6vw, 19px);
+    line-height: 1.35;
+    color: var(--haze);
+    min-height: 2.8em;
+  }
+  .dictum span { transition: opacity .9s ease, filter .9s ease; }
+  .dictum span.out { opacity: 0; filter: blur(6px); }
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    gap: 24px;
+    pointer-events: auto;
+  }
+  nav a {
+    position: relative;
+    color: var(--paper);
+    text-decoration: none;
+    font-weight: 800;
+    font-size: clamp(34px, 7vw, 96px);
+    letter-spacing: -0.03em;
+    line-height: .9;
+    cursor: pointer;
+    transition: color .25s ease, letter-spacing .5s cubic-bezier(.2,.8,.2,1);
+  }
+  nav a small {
+    display: block;
+    font-weight: 500;
+    font-size: clamp(12px, 1.1vw, 14px);
+    letter-spacing: 0;
+    color: var(--haze);
+    margin-bottom: .6em;
+  }
+  nav a:hover, nav a:focus-visible { color: var(--sun); letter-spacing: 0.04em; }
+  nav a:focus-visible { outline: 2px dashed var(--sun); outline-offset: 8px; }
+  nav a.right { text-align: right; }
+  .hint {
+    position: fixed; left: 50%; bottom: clamp(16px, 4vw, 48px);
+    transform: translateX(-50%);
+    font-size: 12px; color: var(--haze);
+    pointer-events: none;
+    transition: opacity 1.2s ease;
+  }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  @media (max-width: 640px) {
+    .hint { bottom: auto; top: clamp(16px, 4vw, 48px); left: auto; right: 16px; transform: none; text-align: right; max-width: 12ch; }
+  }
+</style>
+</head>
+<body>
+<canvas id="field" aria-hidden="true"></canvas>
+<h1 class="sr">Arnav Raja</h1>
+<div class="veil">
+  <p class="dictum" aria-live="polite"><span id="dictum">Be strange on purpose.</span></p>
+  <nav aria-label="Elsewhere">
+    <a href="https://blog.arnavraja.in"><small>what I write</small>blog</a>
+    <a class="right" href="https://stuff.arnavraja.in"><small>everything else</small>stuff</a>
+  </nav>
+</div>
+<p class="hint" id="hint">click to scatter me</p>
+
+<script>
+(() => {
+  const dicta = [
+    "Be strange on purpose.",
+    "Begin before you are ready.",
+    "Make the thing you cannot stop thinking about.",
+    "Every shape here is still deciding.",
+    "Leave a trail worth following.",
+    "Take it apart. Put it back wrong.",
+    "Nothing finished is ever this alive.",
+    "Stay curious longer than is reasonable."
+  ];
+  const d = document.getElementById("dictum");
+  let di = 0;
+  setInterval(() => {
+    d.classList.add("out");
+    setTimeout(() => { di = (di + 1) % dicta.length; d.textContent = dicta[di]; d.classList.remove("out"); }, 900);
+  }, 6500);
+
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const cv = document.getElementById("field");
+  const ctx = cv.getContext("2d");
+  let W, H, DPR, P = [], t = 0;
+  const pointer = { x: -9999, y: -9999, active: false };
+  let storm = 0; // 0 calm, 1 full dissolve
+
+  function build() {
+    DPR = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * DPR; cv.height = H * DPR;
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+
+    const off = document.createElement("canvas");
+    const narrow = W < 700;
+    off.width = W; off.height = H;
+    const o = off.getContext("2d");
+    o.fillStyle = "#000";
+    o.textAlign = "center"; o.textBaseline = "middle";
+    const size = narrow ? Math.min(W * 0.27, 150) : Math.min(W * 0.16, H * 0.3, 260);
+    o.font = `800 ${size}px Syne, sans-serif`;
+    if (narrow) {
+      o.fillText("arnav", W / 2, H * 0.44 - size * 0.5);
+      o.fillText("raja", W / 2, H * 0.44 + size * 0.5);
+    } else {
+      o.fillText("arnav raja", W / 2, H * 0.45);
+    }
+    const data = o.getImageData(0, 0, W, H).data;
+    const step = narrow ? 4 : Math.max(4, Math.round(size / 46));
+    const homes = [];
+    for (let y = 0; y < H; y += step)
+      for (let x = 0; x < W; x += step)
+        if (data[(y * W + x) * 4 + 3] > 128) homes.push([x, y]);
+    const old = P;
+    P = homes.map((h, i) => {
+      const p = old[i];
+      return {
+        hx: h[0], hy: h[1],
+        x: p ? p.x : Math.random() * W,
+        y: p ? p.y : Math.random() * H,
+        vx: 0, vy: 0,
+        k: 0.6 + Math.random() * 0.8,
+        hot: Math.random() < 0.05
+      };
+    });
+  }
+
+  function flow(x, y) {
+    const a = Math.sin(x * 0.0042 + t * 0.6) * Math.cos(y * 0.0051 - t * 0.43) * Math.PI * 2
+            + Math.sin((x + y) * 0.0017 + t * 0.21) * 1.7;
+    return a;
+  }
+
+  function frame() {
+    t += 0.008;
+    // breathing: a slow wave that sometimes lets the name come apart on its own
+    const breath = Math.max(0, Math.sin(t * 0.35) - 0.82) * 4.5;
+    storm = Math.max(storm * 0.985, breath);
+
+    ctx.fillStyle = "rgba(29, 52, 224, 0.22)";
+    ctx.fillRect(0, 0, W, H);
+
+    const pull = 0.012 * (1 - Math.min(storm, 0.95));
+    for (const p of P) {
+      const a = flow(p.x, p.y);
+      const drift = 0.18 + storm * 1.6;
+      p.vx += Math.cos(a) * drift * p.k * 0.25;
+      p.vy += Math.sin(a) * drift * p.k * 0.25;
+      p.vx += (p.hx - p.x) * pull * p.k;
+      p.vy += (p.hy - p.y) * pull * p.k;
+      if (pointer.active) {
+        const dx = p.x - pointer.x, dy = p.y - pointer.y;
+        const d2 = dx * dx + dy * dy;
+        if (d2 < 14000) {
+          const f = (1 - d2 / 14000) * 2.4;
+          const inv = 1 / Math.sqrt(d2 + 0.01);
+          p.vx += dx * inv * f; p.vy += dy * inv * f;
+        }
+      }
+      p.vx *= 0.88; p.vy *= 0.88;
+      const ox = p.x, oy = p.y;
+      p.x += p.vx; p.y += p.vy;
+      const sp = Math.hypot(p.vx, p.vy);
+      ctx.strokeStyle = p.hot ? "#ffd23f" : (sp > 2.2 ? "rgba(242,239,255,0.55)" : "#f2efff");
+      ctx.lineWidth = p.hot ? 2.4 : 1.9;
+      ctx.beginPath();
+      ctx.moveTo(ox - p.vx * 1.5, oy - p.vy * 1.5);
+      ctx.lineTo(p.x + 0.6, p.y + 0.6);
+      ctx.stroke();
+    }
+    requestAnimationFrame(frame);
+  }
+
+  function still() {
+    ctx.fillStyle = "#1d34e0"; ctx.fillRect(0, 0, W, H);
+    ctx.fillStyle = "#f2efff";
+    for (const p of P) ctx.fillRect(p.hx, p.hy, 1.6, 1.6);
+  }
+
+  function scatter(x, y) {
+    storm = 1.15;
+    for (const p of P) {
+      const dx = p.x - x, dy = p.y - y;
+      const d = Math.hypot(dx, dy) + 1;
+      const f = 60 / Math.sqrt(d);
+      p.vx += dx / d * f * p.k; p.vy += dy / d * f * p.k;
+    }
+    document.getElementById("hint").style.opacity = 0;
+  }
+
+  addEventListener("pointermove", e => { pointer.x = e.clientX; pointer.y = e.clientY; pointer.active = true; });
+  addEventListener("pointerleave", () => { pointer.active = false; });
+  addEventListener("pointerdown", e => { if (!e.target.closest("a")) scatter(e.clientX, e.clientY); });
+  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { build(); if (reduce) still(); }, 150); });
+
+  const go = () => { build(); if (reduce) still(); else { ctx.fillStyle = "#1d34e0"; ctx.fillRect(0, 0, W, H); frame(); } };
+  (document.fonts ? document.fonts.load('800 100px Syne').then(go, go) : go());
+})();
+</script>
+</body>
+</html>
