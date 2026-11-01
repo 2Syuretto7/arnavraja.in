@@ -4,114 +4,214 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>arnav raja</title>
-<meta name="description" content="Time only passes here when you are still.">
-<meta name="theme-color" content="#d9d7d0">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23d9d7d0'/%3E%3Ccircle cx='16' cy='16' r='3' fill='%23000'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@200;500&display=swap" rel="stylesheet">
+<meta name="description" content="A light pen and a vector screen, after Sketchpad, 1963. Every line you draw has to be redrawn by the beam.">
+<meta name="theme-color" content="#1b1a17">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231b1a17'/%3E%3Ccircle cx='16' cy='16' r='14' fill='%23000'/%3E%3Cpath d='M8 21 L16 9 L24 21 Z' fill='none' stroke='%23b9ffc8' stroke-width='1.6'/%3E%3C/svg%3E">
 <style>
-  :root { --bg: #d9d7d0; --ink: #000; --g: clamp(16px, 3.5vw, 44px); }
+  :root { --bezel: #1b1a17; --glow: #b9ffc8; --g: clamp(16px, 3.5vw, 44px); }
   * { box-sizing: border-box; }
   html, body { height: 100%; }
   body {
     margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: "Inter Tight", system-ui, sans-serif;
+    background: radial-gradient(circle at 50% 46%, #2a2824 0%, var(--bezel) 62%, #0f0e0c 100%);
+    color: #cfcabd;
+    font: 15px/1.4 system-ui, -apple-system, "Segoe UI", sans-serif;
     overflow: hidden;
-    cursor: default;
   }
-  .count {
-    position: fixed; inset: 0;
-    display: grid; place-items: center;
-    margin: 0;
-    font-weight: 200;
-    font-size: clamp(120px, 34vw, 520px);
-    letter-spacing: -0.06em;
-    font-variant-numeric: tabular-nums;
-    line-height: 1;
-    user-select: none;
-    transition: opacity 1.2s ease;
+  canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: none; }
+  .hint {
+    position: fixed; left: 0; right: 0; bottom: var(--g);
+    margin: 0; padding: 0 16px;
+    text-align: center;
+    pointer-events: none;
   }
-  body.moving .count { opacity: .16; transition: opacity .25s ease; }
-  .door {
-    position: fixed;
-    font-weight: 500;
-    font-size: clamp(18px, 1.6vw, 24px);
-    color: var(--ink);
-    text-decoration: none;
-    opacity: 0;
-    transition: opacity 2.4s ease;
-  }
-  .name { top: var(--g); left: var(--g); }
-  .blog { bottom: var(--g); left: var(--g); }
-  .stuff { bottom: var(--g); right: var(--g); }
-  body.still .door, .door:focus-visible { opacity: 1; }
-  body.moving .door { opacity: 0; transition: opacity .2s ease; }
-  .door:hover { text-decoration: underline; text-underline-offset: .2em; }
-  .door:focus-visible { outline: 2px solid var(--ink); outline-offset: 6px; opacity: 1; }
-  .ask {
-    position: fixed; top: var(--g); right: var(--g);
-    margin: 0;
-    font-weight: 500;
-    font-size: clamp(14px, 1.2vw, 17px);
-    transition: opacity .6s ease;
-  }
-  body.still .ask { opacity: 0; transition: opacity 2s ease; }
-  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .kbd { position: fixed; top: var(--g); padding: 6px 10px; background: #000; color: var(--glow); outline: 2px solid var(--glow); text-decoration: none; transform: translateY(-300%); }
+  .kbd:focus { transform: none; }
+  .kbd.b { left: var(--g); } .kbd.s { right: var(--g); }
 </style>
 </head>
-<body class="moving">
+<body>
 <h1 class="sr">Arnav Raja</h1>
-<p class="count" id="count" aria-hidden="true">0</p>
-<p class="ask" id="ask">Be still.</p>
-<span class="door name" aria-hidden="true">arnav raja</span>
-<a class="door blog" href="https://blog.arnavraja.in">blog</a>
-<a class="door stuff" href="https://stuff.arnavraja.in">stuff</a>
+<canvas id="scope" aria-hidden="true"></canvas>
+<p class="hint" id="hint">Draw on the screen with the light pen. Point at a word to go there. Tap twice quickly to wipe the screen.</p>
+<a class="kbd b" href="https://blog.arnavraja.in">blog</a>
+<a class="kbd s" href="https://stuff.arnavraja.in">stuff</a>
 <script>
 (() => {
-  // Seconds only pass while you are still. They are kept between visits.
-  const KEY = "stillness";
-  let total = 0;
-  try { total = +localStorage.getItem(KEY) || 0; } catch (e) {}
-  const count = document.getElementById("count");
-  const body = document.body;
-  let last = performance.now(), prev = last, saved = 0;
-  const STILL = 900, REVEAL = 2600;
+  const cv = document.getElementById("scope"), ctx = cv.getContext("2d");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const TAU = Math.PI * 2;
 
-  const stir = e => {
-    if (e && e.type === "keydown" && (e.key === "Tab" || e.key === "Enter" || e.key === "Shift")) return;
-    last = performance.now();
-    body.classList.add("moving");
-    body.classList.remove("still");
+  // A small stroke font, the way a vector display draws letters: lines, not pixels.
+  const arc = (cx, cy, rx, ry, a0, a1, n = 14) => Array.from({ length: n + 1 }, (_, i) => { const a = a0 + (a1 - a0) * i / n; return [cx + rx * Math.cos(a), cy + ry * Math.sin(a)]; });
+  const ring = (cx, cy, rx, ry) => arc(cx, cy, rx, ry, 0, TAU, 20);
+  const G = {
+    a: { w: .62, s: [ring(.27, .25, .26, .25), [[.53, .5], [.53, 0]]] },
+    b: { w: .6, s: [[[0, 1], [0, 0]], ring(.29, .25, .27, .25)] },
+    f: { w: .4, s: [arc(.33, .8, .17, .18, .35, Math.PI, 8).concat([[.16, 0]]), [[0, .5], [.34, .5]]] },
+    g: { w: .62, s: [ring(.27, .25, .26, .25), [[.53, .5], [.53, -.12]].concat(arc(.29, -.12, .24, .2, 0, -Math.PI, 10))] },
+    j: { w: .26, s: [[[.14, .5], [.14, -.14]].concat(arc(-.02, -.14, .16, .18, 0, -Math.PI * .8, 8)), [[.14, .66], [.14, .72]]] },
+    l: { w: .14, s: [[[0, 1], [0, 0]]] },
+    n: { w: .54, s: [[[0, .5], [0, 0]], arc(.24, .28, .24, .22, Math.PI, 0, 10).concat([[.48, 0]])] },
+    o: { w: .6, s: [ring(.29, .25, .29, .25)] },
+    r: { w: .36, s: [[[0, .5], [0, 0]], arc(.22, .28, .22, .22, Math.PI, Math.PI * .22, 8)] },
+    s: { w: .5, s: [arc(.24, .375, .23, .125, .4, Math.PI * 1.5, 10).concat(arc(.24, .125, .23, .125, Math.PI / 2, -Math.PI + .4, 10))] },
+    t: { w: .38, s: [[[.14, .8], [.14, .08], [.22, 0], [.36, 0]], [[0, .5], [.32, .5]]] },
+    u: { w: .54, s: [[[0, .5], [0, .22]].concat(arc(.24, .22, .24, .22, Math.PI, TAU, 10)), [[.48, .5], [.48, 0]]] },
+    v: { w: .52, s: [[[0, .5], [.26, 0], [.52, .5]]] },
+    " ": { w: .3, s: [] }
   };
-  ["pointermove", "pointerdown", "wheel", "keydown", "touchstart", "scroll"].forEach(t => addEventListener(t, stir, { passive: true }));
-  addEventListener("deviceorientation", e => {
-    const v = Math.abs(e.beta || 0) + Math.abs(e.gamma || 0);
-    if (Math.abs(v - (stir.v || v)) > 4) stir();
-    stir.v = v;
-  });
-  const save = () => { try { localStorage.setItem(KEY, String(total)); } catch (e) {} };
-  document.addEventListener("visibilitychange", () => { prev = performance.now(); save(); });
-  addEventListener("pagehide", save);
-
-  const show = () => { count.textContent = Math.floor(total).toLocaleString("en-US"); };
-  show();
-  const tick = now => {
-    const idle = now - last, dt = Math.min(250, now - prev);
-    prev = now;
-    if (idle > STILL && !document.hidden) {
-      body.classList.remove("moving");
-      total += dt / 1000;
-      show();
-      if (now - saved > 1000) { saved = now; try { localStorage.setItem(KEY, String(total)); } catch (e) {} }
+  // Lay a word out in scope units (-1..1, y up), centred on (cx, cy).
+  function word(text, cx, cy, h) {
+    const gap = .14;
+    let w = 0; for (const c of text) w += (G[c] ? G[c].w : .3) + gap; w -= gap;
+    let x = cx - w * h / 2;
+    const out = [];
+    for (const c of text) {
+      const g = G[c] || G[" "];
+      for (const s of g.s) out.push(s.map(([px, py]) => [x + px * h, cy + (py - .25) * h]));
+      x += (g.w + gap) * h;
     }
-    body.classList.toggle("still", idle > REVEAL);
-    requestAnimationFrame(tick);
+    return { lines: out, box: [cx - w * h / 2, cy - .45 * h, cx + w * h / 2, cy + .85 * h] };
+  }
+
+  const name = word("arnav raja", 0, .12, .2);
+  const doors = [
+    { ...word("blog", -.4, -.5, .13), href: "https://blog.arnavraja.in" },
+    { ...word("stuff", .4, -.5, .13), href: "https://stuff.arnavraja.in" }
+  ];
+
+  // Lines drawn by visitors, kept in this browser.
+  let lines = [];
+  try { lines = JSON.parse(localStorage.getItem("sketchpad") || "[]"); } catch (e) {}
+  const save = () => { try { localStorage.setItem("sketchpad", JSON.stringify(lines.slice(-600))); } catch (e) {} };
+
+  let W, H, CX, CY, R, DPR;
+  const toPx = ([x, y]) => [CX + x * R, CY - y * R];
+  const toU = (px, py) => [(px - CX) / R, (CY - py) / R];
+  function size() {
+    DPR = Math.min(devicePixelRatio || 1, 2);
+    W = innerWidth; H = innerHeight;
+    cv.width = W * DPR; cv.height = H * DPR; ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    R = Math.min(W, H - 90) * .46; CX = W / 2; CY = (H - 50) / 2;
+    ctx.save(); ctx.beginPath(); ctx.arc(CX, CY, R, 0, TAU); ctx.fillStyle = "#000"; ctx.fill(); ctx.restore();
+  }
+
+  // The light pen.
+  const pen = { x: -1e4, y: -1e4, on: false, down: null, start: null, end: null, door: null };
+  const SNAP = 14;
+  function snap(px, py, from) {
+    let best = null, bd = SNAP;
+    for (const l of lines) for (const e of [l[0], l[1]]) {
+      const [ex, ey] = toPx(e), d = Math.hypot(ex - px, ey - py);
+      if (d < bd) { bd = d; best = [ex, ey]; }
+    }
+    if (best) return best;
+    if (from) {
+      const dx = px - from[0], dy = py - from[1], a = Math.atan2(dy, dx), deg = ((a * 180 / Math.PI) % 90 + 90) % 90;
+      if (deg < 5 || deg > 85) return Math.abs(dx) > Math.abs(dy) ? [px, from[1]] : [from[0], py];
+    }
+    return [px, py];
+  }
+  const doorAt = (px, py) => {
+    const [ux, uy] = toU(px, py);
+    return doors.find(d => ux > d.box[0] - .04 && ux < d.box[2] + .04 && uy > d.box[1] - .04 && uy < d.box[3] + .04) || null;
   };
-  requestAnimationFrame(tick);
+  const inside = (px, py) => Math.hypot(px - CX, py - CY) < R;
+
+  cv.addEventListener("pointermove", e => {
+    pen.x = e.clientX; pen.y = e.clientY; pen.on = inside(pen.x, pen.y);
+    pen.door = pen.down ? null : doorAt(pen.x, pen.y);
+    if (pen.start) pen.end = snap(pen.x, pen.y, pen.start);
+    cv.style.cursor = pen.on ? "none" : "default";
+  });
+  cv.addEventListener("pointerleave", () => { pen.on = false; pen.door = null; });
+  cv.addEventListener("pointerdown", e => {
+    pen.x = e.clientX; pen.y = e.clientY; pen.on = inside(pen.x, pen.y);
+    if (!pen.on) return;
+    cv.setPointerCapture(e.pointerId);
+    pen.down = [pen.x, pen.y];
+    pen.door = doorAt(pen.x, pen.y);
+    if (!pen.door) { pen.start = snap(pen.x, pen.y); pen.end = pen.start; }
+  });
+  cv.addEventListener("pointerup", e => {
+    const moved = pen.down ? Math.hypot(e.clientX - pen.down[0], e.clientY - pen.down[1]) : 99;
+    if (pen.door && moved < 8 && doorAt(e.clientX, e.clientY) === pen.door) { location.href = pen.door.href; return; }
+    if (pen.start && pen.end && Math.hypot(pen.end[0] - pen.start[0], pen.end[1] - pen.start[1]) > 6) {
+      lines.push([toU(...pen.start), toU(...pen.end)].map(p => p.map(v => +v.toFixed(4))));
+      save();
+      document.getElementById("hint").style.opacity = .45;
+    }
+    else if (moved < 8 && inside(e.clientX, e.clientY) && !doorAt(e.clientX, e.clientY)) {
+      // Two quick taps in the same place wipe the screen.
+      const now = performance.now();
+      if (lastTap && now - lastTap.t < 400 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 30) { lines = []; save(); lastTap = null; }
+      else lastTap = { t: now, x: e.clientX, y: e.clientY };
+    }
+    pen.down = pen.start = pen.end = null;
+    if (e.pointerType !== "mouse") pen.on = false;
+  });
+  let lastTap = null;
+  addEventListener("keydown", e => { if ((e.key === "Backspace" || e.key === "Delete") && lines.length) { lines.pop(); save(); } });
+
+  // The display list: everything the beam must visit, every refresh.
+  function displayList() {
+    const segs = [];
+    const add = (poly, k = 1) => { for (let i = 0; i < poly.length - 1; i++) { const a = toPx(poly[i]), b = toPx(poly[i + 1]); segs.push([a[0], a[1], b[0], b[1], k]); } };
+    for (const s of name.lines) add(s);
+    for (const d of doors) for (const s of d.lines) { add(s, d === pen.door ? 1.6 : .8); if (d === pen.door) add(s, 1.6); }
+    for (const l of lines) add(l);
+    if (pen.start && pen.end) { const [a, b] = [pen.start, pen.end]; segs.push([a[0], a[1], b[0], b[1], 1.2]); }
+    if (pen.on) { const c = 9; segs.push([pen.x - c, pen.y, pen.x + c, pen.y, 1.3], [pen.x, pen.y - c, pen.x, pen.y + c, 1.3]); }
+    return segs;
+  }
+
+  // The beam has a fixed amount of travel per frame. Past that, the picture can no longer be refreshed in time.
+  let beamSeg = 0, beamT = 0;
+  function frame() {
+    const segs = displayList();
+    ctx.save();
+    ctx.beginPath(); ctx.arc(CX, CY, R, 0, TAU); ctx.clip();
+    ctx.fillStyle = "rgba(0, 0, 0, 0.14)"; ctx.fillRect(CX - R, CY - R, R * 2, R * 2);
+    let budget = R * 26, hx = null, hy = null;
+    ctx.lineCap = "round";
+    let guard = 0;
+    while (budget > 0 && segs.length && guard++ < 20000) {
+      if (beamSeg >= segs.length) { beamSeg = 0; beamT = 0; }
+      const [x1, y1, x2, y2, k] = segs[beamSeg];
+      const len = Math.hypot(x2 - x1, y2 - y1) || .5;
+      const t1 = Math.min(1, beamT + budget / len);
+      const ax = x1 + (x2 - x1) * beamT, ay = y1 + (y2 - y1) * beamT, bx = x1 + (x2 - x1) * t1, by = y1 + (y2 - y1) * t1;
+      ctx.strokeStyle = `rgba(90, 255, 140, ${0.16 * k})`; ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+      ctx.strokeStyle = `rgba(214, 255, 224, ${Math.min(1, 0.85 * k)})`; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(bx, by); ctx.stroke();
+      budget -= (t1 - beamT) * len + 6;
+      hx = bx; hy = by;
+      if (t1 >= 1) { beamSeg++; beamT = 0; } else beamT = t1;
+    }
+    if (hx !== null) {
+      const g = ctx.createRadialGradient(hx, hy, 0, hx, hy, 7);
+      g.addColorStop(0, "rgba(235, 245, 255, .95)"); g.addColorStop(1, "rgba(235, 245, 255, 0)");
+      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(hx, hy, 7, 0, TAU); ctx.fill();
+    }
+    ctx.restore();
+    requestAnimationFrame(frame);
+  }
+
+  addEventListener("resize", size);
+  size();
+  if (reduce) {
+    const still = () => {
+      size();
+      ctx.save(); ctx.beginPath(); ctx.arc(CX, CY, R, 0, TAU); ctx.clip();
+      ctx.strokeStyle = "#d6ffe0"; ctx.lineWidth = 1.5;
+      for (const [x1, y1, x2, y2] of displayList()) { ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); }
+      ctx.restore();
+    };
+    still(); ["pointerup", "pointermove", "resize", "keydown"].forEach(t => addEventListener(t, () => requestAnimationFrame(still)));
+  } else requestAnimationFrame(frame);
 })();
 </script>
 </body>
