@@ -19,12 +19,6 @@
     overflow: hidden;
   }
   canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; cursor: none; }
-  .hint {
-    position: fixed; left: 0; right: 0; bottom: var(--g);
-    margin: 0; padding: 0 16px;
-    text-align: center;
-    pointer-events: none;
-  }
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   .kbd { position: fixed; top: var(--g); padding: 6px 10px; background: #000; color: var(--glow); outline: 2px solid var(--glow); text-decoration: none; transform: translateY(-300%); }
   .kbd:focus { transform: none; }
@@ -34,7 +28,6 @@
 <body>
 <h1 class="sr">Arnav Raja</h1>
 <canvas id="scope" aria-hidden="true"></canvas>
-<p class="hint" id="hint">Draw on the screen with the light pen. Point at a word to go there. Tap twice quickly to wipe the screen.</p>
 <a class="kbd b" href="https://blog.arnavraja.in">blog</a>
 <a class="kbd s" href="https://stuff.arnavraja.in">stuff</a>
 <script>
@@ -141,7 +134,6 @@
     if (pen.start && pen.end && Math.hypot(pen.end[0] - pen.start[0], pen.end[1] - pen.start[1]) > 6) {
       lines.push([toU(...pen.start), toU(...pen.end)].map(p => p.map(v => +v.toFixed(4))));
       save();
-      document.getElementById("hint").style.opacity = .45;
     }
     else if (moved < 8 && inside(e.clientX, e.clientY) && !doorAt(e.clientX, e.clientY)) {
       // Two quick taps in the same place wipe the screen.
